@@ -1,0 +1,57 @@
+  - type: image
+    entity: light.lampe_alexander_deckenlampe_light
+    state_image:
+      'on': local/floorplan/f1/f1_alex-licht-an.png
+      'off': local/floorplan/f1/f1_alex-licht-aus.png
+      unavailable: local/floorplan/f1/f1_alex-licht-aus.png
+    style:
+      top: 70%
+      left: 82%
+      width: 31.3%
+    tap_action:
+      action: none
+  - type: image
+    entity: switch.steckdose_ausgang_switch
+    state_image:
+      'on': local/floorplan/f1/f1_alex-exit-an.png
+      'off': local/floorplan/f1/f1_alex-licht-empty.png
+      unavailable: local/floorplan/f1/f1_alex-licht-empty.png
+    style:
+      top: 70%
+      left: 82%
+      width: 31.3%
+      mix-blend-mode: screen
+      z-index: 2
+    tap_action:
+      action: none
+  - type: image
+    entity: light.signify_netherlands_b_v_lwv001_huelight
+    state_image:
+      'on': local/floorplan/f1/f1_alex-bett-an.png
+      'off': local/floorplan/f1/f1_alex-bett-an.png
+      unavailable: local/floorplan/f1/f1_alex-licht-empty.png
+    style:
+      top: 70%
+      left: 82%
+      width: 31.3%
+      mix-blend-mode: screen
+      z-index: 2
+    tap_action:
+      action: none
+  - type: state-icon
+    entity: light.lampe_alexander_schreibtisch_light
+    icon: mdi:desk-lamp
+    style:
+      opacity: 0.5
+      background: white
+      border: 1px dotted gray
+      border-radius: 100px
+      top: 79%
+      left: 69%
+      z-index: 3
+      transform: scale(75%, 75%)
+    tap_action:
+      action: toggle
+      transform: scale(75%, 75%)
+    tap_action:
+      action: toggle
