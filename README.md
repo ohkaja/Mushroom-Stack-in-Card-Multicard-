@@ -8,18 +8,25 @@ Lovelace Plugins needed:
 * Mini-Graph-Card => https://github.com/kalkih/mini-graph-card
 
 # Create a simplified Floorplan/ Cardspace
-<a href="https://youtu.be/XtIilQJFz8U"><img width="282" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/9f031b67-a714-46ef-aaa9-bedfae351f59"></a>
-Click to play Video
+<a href="https://youtu.be/XtIilQJFz8U">Video demo Youtube</a>
+<p></p>
+<img width="282" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/9f031b67-a714-46ef-aaa9-bedfae351f59">
+
+
+
 
 # Room example
 <img width="377" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/70d2fc2c-36c7-48e3-82b5-9e64234871e0">
+<p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20room">Code</a>
 
 # Energymeter example
 <img width="379" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/3628344f-e9bb-4729-91d1-af24ab37e152">
+<p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20energymeter">Code</a>
 
 # Multilayer Floorplan
 ![Unbenannt-1](https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/0eaca95d-f13f-4b2b-a810-dc9f8615f65c)
+<p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20floorplan">Code</a>
 
