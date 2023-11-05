@@ -8,7 +8,8 @@ Lovelace Plugins needed:
 * Mini-Graph-Card => https://github.com/kalkih/mini-graph-card
 
 # Create a simplified Floorplan/ Cardspace
-https://youtu.be/XtIilQJFz8U
+<a href="https://youtu.be/XtIilQJFz8U"><img width="282" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/9f031b67-a714-46ef-aaa9-bedfae351f59"></a>
+Click to play Video
 
 # Room example
 <img width="377" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/70d2fc2c-36c7-48e3-82b5-9e64234871e0">
