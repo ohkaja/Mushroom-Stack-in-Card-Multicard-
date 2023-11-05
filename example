@@ -1,0 +1,137 @@
+type: custom:stack-in-card
+title: null
+mode: vertical
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        icon: mdi:chef-hat
+        icon_color: |-
+          {% if is_state('light.f2_kuche', 'on') %}
+          orange
+          {% else %}
+          grey
+          {% endif %}
+        entity: light.f2_kuche
+        primary: Küche
+        secondary: >-
+          {{ states('sensor.f2_kueche_aktuelle_temperatur') | round(1) }}
+          °C     
+            {% if is_state_attr('climate.thermostat_kuche', 'preset_mode', 'eco') or
+              is_state_attr('climate.thermostat_kuche', 'preset_mode', 'comfort') %}
+              ({{ state_attr('climate.thermostat_kuche', 'preset_mode') }})
+            {% else %}
+              {% if is_state_attr('climate.thermostat_kuche', 'temperature', 0)  %}
+                {% else %}
+                (manuell)
+              {% endif %}
+            {% endif %}
+            
+        tap_action:
+          action: toggle
+        multiline_secondary: false
+        card_mod:
+          style: |
+            ha-card {
+            border: none;
+            }
+            :host {
+              --mush-icon-size: 76px;
+              height: 66px;
+              margin-left: -20px !important;
+              margin-top: -20px !important;
+            }
+      - type: conditional
+        conditions:
+          - entity: light.f2_kuche
+            state: 'on'
+        card:
+          type: custom:mushroom-light-card
+          entity: light.f2_kuche
+          name: ' '
+          layout: horizontal
+          primary_info: none
+          secondary_info: none
+          icon_type: none
+          show_brightness_control: true
+          tap_action:
+            action: none
+          hold_action:
+            action: none
+          double_tap_action:
+            action: none
+          card_mod: null
+          style: |
+            ha-card {
+            border:none;
+            margin-top: -20px;
+            top: 20px;
+            }
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: climate.thermostat_kuche
+            content_info: none
+            icon_color: orange
+            tap_action:
+              action: more-info
+            alignment: start
+            card_mod:
+              style: |
+                ha-card {
+                margin-top: 30px;
+                bottom: 5px;
+                left: 5px;
+                }
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: action
+            double_tap_action:
+              action: none
+            icon: mdi:menu
+            icon_color: primary
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace/kuche
+            hold_action:
+              action: none
+        alignment: center
+        card_mod:
+          style: |
+            ha-card {
+            margin-top: 30px;
+            bottom: 5px;
+            }
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: switch.iot_f2_essbereich_steckdose_socket
+            content_info: none
+            icon: mdi:power-socket-eu
+            icon_color: green
+            tap_action:
+              action: toggle
+          - type: entity
+            entity: switch.iot_f2_kueche_balkon_steckdose
+            content_info: none
+            icon: mdi:power-socket-eu
+            icon_color: green
+            tap_action:
+              action: toggle
+          - type: entity
+            entity: switch.iot_f2_kueche_arbeitsplatte_steckdose
+            content_info: none
+            icon: mdi:power-socket-eu
+            icon_color: green
+            tap_action:
+              action: toggle
+        alignment: end
+        card_mod:
+          style: |
+            ha-card {
+            margin-top: 30px;
+            right: 5px;
+            bottom: 5px;
+            }
