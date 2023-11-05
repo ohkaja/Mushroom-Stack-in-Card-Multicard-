@@ -14,3 +14,7 @@ Lovelace Plugins needed:
 # Energymeter example
 <img width="379" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/3628344f-e9bb-4729-91d1-af24ab37e152">
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20energymeter">Code</a>
+
+# Multilayer Floorplan
+![Unbenannt-1](https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/0eaca95d-f13f-4b2b-a810-dc9f8615f65c)
+
