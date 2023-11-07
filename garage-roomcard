@@ -1,0 +1,183 @@
+type: custom:stack-in-card
+title: null
+mode: vertical
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        icon: |-
+          {% if is_state('binary_sensor.garagentorsteuerung_input', 'on') %}
+          mdi:garage-open
+          {% else %}
+          mdi:garage
+          {% endif %}
+        icon_color: |-
+          {% if is_state('switch.lampe_garage', 'on') %}
+          orange
+          {% else %}
+          grey
+          {% endif %}
+        entity: switch.lampe_garage
+        primary: Garage
+        secondary: '{{ states(''sensor.fritz_dect_200_1_temperature'') | round(1) }} °C'
+        multiline_secondary: true
+        tap_action:
+          action: toggle
+        card_mod:
+          style: |
+            ha-card {
+            border: none;
+            }
+            :host {
+              --mush-icon-size: 76px;
+              height: 66px;
+              margin-left: -20px !important;
+              margin-top: -20px !important;
+            }
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: conditional
+            conditions:
+              - entity: input_text.garagentor_activity
+                state_not: idle
+            chip:
+              type: entity
+              entity: input_text.garagentor_activity
+              icon_color: accent
+              content_info: none
+              double_tap_action:
+                action: none
+              tap_action:
+                action: none
+              hold_action:
+                action: none
+              card_mod:
+                style: |
+                  ha-card {
+                  animation: blinker 0.5s linear infinite;
+                  background-color: rgba(249, 180, 45, 0.2) !important;
+                  }
+                  @keyframes blinker {
+                  90% {
+                  opacity: 0;
+                  }
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.garagentorsteuerung_input
+                state_not: 'off'
+            chip:
+              type: entity
+              entity: binary_sensor.garagentorsteuerung_input
+              double_tap_action:
+                action: none
+              content_info: none
+              icon_color: red
+              hold_action:
+                action: none
+              tap_action:
+                action: call-service
+                service: switch.toggle
+                target:
+                  entity_id: switch.garagentorsteuerung
+                data: {}
+              icon: mdi:garage-open
+              card_mod:
+                style: |
+                  ha-card {
+                  animation: blinker 2.0s linear infinite;
+                  background-color: rgba(242, 121, 53, 0.2) !important;
+                  }
+                  @keyframes blinker {
+                  10% {
+                  opacity: 0;
+                  }
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.garagentorsteuerung_input
+                state: 'off'
+              - entity: input_text.garagentor_activity
+                state: idle
+            chip:
+              type: entity
+              entity: binary_sensor.garagentorsteuerung_input
+              double_tap_action:
+                action: none
+              content_info: none
+              icon_color: green
+              hold_action:
+                action: none
+              tap_action:
+                action: call-service
+                service: switch.toggle
+                target:
+                  entity_id: switch.garagentorsteuerung
+                data: {}
+              icon: mdi:garage-lock
+              card_mod:
+                style: |
+                  ha-card {
+                  background-color: rgba(51, 170, 51, 0.2) !important;
+                  }
+          - type: entity
+            entity: switch.lampe_garage
+            icon_color: orange
+            content_info: none
+            icon: mdi:lightbulb
+            tap_action:
+              action: toggle
+        alignment: start
+        card_mod:
+          style: |
+            ha-card {
+            margin-top: 30px;
+            bottom: 5px;
+            left: 5px;
+            }
+      - type: custom:mushroom-chips-card
+        chips:
+          - type: entity
+            entity: light.iot_garagentor_led
+            icon: mdi:led-on
+            icon_color: red
+            content_info: none
+          - type: conditional
+            conditions:
+              - entity: select.iot_garagentor_led_voreinstellung
+                state_not: unknown
+            chip:
+              type: entity
+              entity: select.iot_garagentor_led_voreinstellung
+              icon: mdi:animation-play
+              icon_color: green
+              content_info: none
+          - type: conditional
+            conditions:
+              - entity: select.iot_garagentor_led_voreinstellung
+                state: unknown
+            chip:
+              type: entity
+              entity: select.iot_garagentor_led_voreinstellung
+              icon: mdi:animation-play
+              icon_color: red
+              content_info: none
+          - type: entity
+            entity: switch.fritz_dect_200_1
+            double_tap_action:
+              action: none
+            icon: mdi:power-socket-eu
+            icon_color: green
+            content_info: none
+            tap_action:
+              action: toggle
+            hold_action:
+              action: none
+        alignment: end
+        card_mod:
+          style: |
+            ha-card {
+            margin-top: 30px;
+            bottom: 5px;
+            right: 5px;
+            }
