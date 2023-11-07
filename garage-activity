@@ -1,0 +1,177 @@
+alias: STATUS-Garagentor-Activity
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - switch.garagentorsteuerung
+    id: garage-opening
+    enabled: true
+    to: "on"
+    from: "off"
+    alias: Öffnet
+  - platform: state
+    entity_id:
+      - binary_sensor.garagentorsteuerung_input
+    to: "on"
+    id: garage-open
+    enabled: true
+    alias: Geöffnet
+  - platform: state
+    entity_id:
+      - binary_sensor.garagentorsteuerung_input
+    to: "off"
+    id: garage-closing
+    alias: Schließt
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - garage-opening
+          - condition: state
+            entity_id: binary_sensor.garagentorsteuerung_input
+            state: "off"
+        sequence:
+          - service: input_text.set_value
+            data:
+              value: öffnet
+            target:
+              entity_id: input_text.garagentor_activity
+            alias: Status (Helfer) aktualisieren
+          - alias: WLED Animation öffnen abspielen
+            device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+            domain: select
+            entity_id: a6d2ebc601f1c2ca71406c0e433251ec
+            type: select_option
+            option: Garage_OPENING
+          - alias: Warten bis Tor geöffnet ist
+            delay:
+              hours: 0
+              minutes: 0
+              seconds: 22
+              milliseconds: 0
+          - service: input_text.set_value
+            data:
+              value: idle
+            target:
+              entity_id: input_text.garagentor_activity
+            alias: Status (Helfer) aktualisieren
+      - conditions:
+          - condition: trigger
+            id:
+              - garage-open
+            alias: Geöffnet
+        sequence:
+          - device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+            domain: select
+            entity_id: a6d2ebc601f1c2ca71406c0e433251ec
+            type: select_option
+            option: GARAGE_OPEN
+            alias: WLED Animation geöffnet abspielen
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+          - alias: Garagenlicht (bei Nacht)
+            if:
+              - condition: state
+                entity_id: sun.sun
+                state: below_horizon
+            then:
+              - type: turn_on
+                device_id: ad85953b94feff86d1fa812fbbd76dfc
+                entity_id: ccb98f292b3779119858743f5ad59052
+                domain: switch
+              - device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+                domain: select
+                entity_id: a6d2ebc601f1c2ca71406c0e433251ec
+                type: select_option
+                option: GARAGE_SPOTS
+              - delay:
+                  hours: 0
+                  minutes: 3
+                  seconds: 0
+                  milliseconds: 0
+              - type: turn_off
+                device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+                entity_id: 1fdaeff74aabe2b77d854576fd0b1be7
+                domain: light
+            else:
+              - type: turn_off
+                device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+                entity_id: 1fdaeff74aabe2b77d854576fd0b1be7
+                domain: light
+      - conditions:
+          - condition: trigger
+            id:
+              - garage-closing
+            alias: Schließen
+        sequence:
+          - type: turn_off
+            device_id: ad85953b94feff86d1fa812fbbd76dfc
+            entity_id: ccb98f292b3779119858743f5ad59052
+            domain: switch
+            alias: Garagenlicht ausschalten
+          - service: input_text.set_value
+            data:
+              value: schließt
+            target:
+              entity_id: input_text.garagentor_activity
+            alias: Status (Helfer) aktualisieren
+          - alias: WLED Animation schließen abspielen
+            device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+            domain: select
+            entity_id: a6d2ebc601f1c2ca71406c0e433251ec
+            type: select_option
+            option: GARAGE_CLOSING
+          - alias: Warten bis Tor geschlossen ist
+            delay:
+              hours: 0
+              minutes: 0
+              seconds: 21
+              milliseconds: 0
+          - service: input_text.set_value
+            data:
+              value: idle
+            target:
+              entity_id: input_text.garagentor_activity
+            alias: Status (Helfer) aktualisieren
+          - alias: WLED Animation geschlossen abspielen
+            device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+            domain: select
+            entity_id: a6d2ebc601f1c2ca71406c0e433251ec
+            type: select_option
+            option: GARAGE_CLOSED
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+          - alias: Garagenlicht (bei Nacht)
+            if:
+              - condition: state
+                entity_id: sun.sun
+                state: below_horizon
+            then:
+              - device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+                domain: select
+                entity_id: a6d2ebc601f1c2ca71406c0e433251ec
+                type: select_option
+                option: GARAGE_SPOTS
+              - delay:
+                  hours: 0
+                  minutes: 3
+                  seconds: 0
+                  milliseconds: 0
+              - type: turn_off
+                device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+                entity_id: 1fdaeff74aabe2b77d854576fd0b1be7
+                domain: light
+            else:
+              - type: turn_off
+                device_id: 655f54c13a31fd3e8ebcc0c2bd8a0cd1
+                entity_id: 1fdaeff74aabe2b77d854576fd0b1be7
+                domain: light
+mode: restart
