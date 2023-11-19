@@ -1,0 +1,11 @@
+card_mod:
+  style: |-
+    ha-card {
+      {% if state_attr('media_player.fire_tv_192_168_2_16', 'entity_picture') == none %}
+      background-image: none;
+      {% else %}
+      border: 1px #343434 solid;
+      background: url({{ state_attr('media_player.fire_tv_192_168_2_16', 'entity_picture') }}) center/100% no-repeat;
+      box-shadow: inset 0 0 0 80px rgba(0, 0, 0, 0.7);
+      {% endif %} 
+    }
