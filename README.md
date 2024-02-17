@@ -41,3 +41,8 @@ Lovelace Plugins needed:
 <p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20floorplan">Code</a>
 
+# Tankerkoenig Card
+![image](https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/315f718a-9d13-498a-84dc-270dc3613523)
+
+<p></p>
+<a href=https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/Tankerkoenig-Mushroom-Card>Code</a>
