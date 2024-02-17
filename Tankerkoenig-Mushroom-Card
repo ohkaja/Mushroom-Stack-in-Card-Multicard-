@@ -1,0 +1,185 @@
+type: custom:stack-in-card
+title: null
+mode: vertical
+cards:
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                icon: mdi:gas-station
+                icon_color: amber
+                tap_action:
+                  action: none
+                multiline_secondary: false
+                card_mod:
+                  style: |
+                    ha-card {
+                    overflow: visible;
+                    border: none;
+                    z-index: 2;
+                    }
+                    :host {
+                      --mush-icon-size: 100px;
+                      margin-left: -40px !important;
+                      margin-top: -20px !important;
+                    }
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-chips-card
+                chips:
+                  - type: template
+                    tap_action:
+                      action: none
+                    icon: mdi:gas-station
+                    icon_color: orange
+                    content: Globus
+                    card_mod:
+                      style: |
+                        ha-card {
+                        border: none !important;
+                        background: none !important;
+                        margin-left: -80px;
+                        }
+                  - type: entity
+                    entity: sensor.globus_sb_warenhaus_im_neefepark_2_diesel
+                    tap_action:
+                      action: none
+                    icon: mdi:fuel
+                    icon_color: black
+                    card_mod:
+                      style: |
+                        ha-card {
+                        border: none !important;
+                        background: none !important;
+                        margin-left: 3px;
+                        }
+                  - type: entity
+                    entity: sensor.globus_sb_warenhaus_im_neefepark_2_super_e10
+                    tap_action:
+                      action: none
+                    icon: mdi:fuel
+                    icon_color: amber
+                    card_mod:
+                      style: |
+                        ha-card {
+                        border: none !important;
+                        background: none !important;
+                        }
+                card_mod:
+                  style: |
+                    ha-card {
+                    margin-left: -30px;
+                    }
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: binary_sensor.sprint_hofer_str_76_status
+                    state: 'on'
+                card:
+                  type: custom:mushroom-chips-card
+                  chips:
+                    - type: template
+                      tap_action:
+                        action: none
+                      icon: mdi:gas-station
+                      icon_color: gray
+                      content: Sprint
+                      card_mod:
+                        style: |
+                          ha-card {
+                          border: none !important;
+                          background: none !important;
+                          margin-left: -80px;
+                          }
+                    - type: entity
+                      entity: sensor.sprint_hofer_str_76_diesel
+                      tap_action:
+                        action: none
+                      icon: mdi:fuel
+                      icon_color: black
+                      card_mod:
+                        style: |
+                          ha-card {
+                          border: none !important;
+                          background: none !important;
+                          margin-left: 3px;
+                          }
+                    - type: entity
+                      entity: sensor.sprint_hofer_str_76_super_e10
+                      tap_action:
+                        action: none
+                      icon: mdi:fuel
+                      icon_color: amber
+                      card_mod:
+                        style: |
+                          ha-card {
+                          border: none !important;
+                          background: none !important;
+                          }
+                  card_mod:
+                    style: |
+                      ha-card {
+                        margin-top: -10px;
+                        margin-left: -30px;
+                        }
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: binary_sensor.elan_dresdner_str_106_status
+                    state: 'on'
+                card:
+                  type: custom:mushroom-chips-card
+                  chips:
+                    - type: template
+                      tap_action:
+                        action: none
+                      icon: mdi:gas-station
+                      icon_color: red
+                      content: ELAN
+                      card_mod:
+                        style: |
+                          ha-card {
+                          border: none !important;
+                          background: none !important;
+                          margin-left: -80px;
+                          }
+                    - type: entity
+                      entity: sensor.elan_dresdner_str_106_diesel
+                      tap_action:
+                        action: none
+                      icon: mdi:fuel
+                      icon_color: black
+                      card_mod:
+                        style: |
+                          ha-card {
+                          border: none !important;
+                          background: none !important;
+                          margin-left: 3px;
+                          }
+                    - type: entity
+                      entity: sensor.elan_dresdner_str_106_super_e10
+                      tap_action:
+                        action: none
+                      icon: mdi:fuel
+                      icon_color: amber
+                      card_mod:
+                        style: |
+                          ha-card {
+                          border: none !important;
+                          background: none !important;
+                          }
+                  card_mod:
+                    style: |
+                      ha-card {
+                        margin-top: -10px;
+                        margin-left: -30px;
+                        }
+card_mod:
+  style: |
+    ha-card {
+    max-height: 90px !important;
+    min-height: 90px !important;
+    }
