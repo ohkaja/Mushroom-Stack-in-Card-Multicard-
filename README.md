@@ -37,8 +37,7 @@ Lovelace Plugins needed:
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/media%20room%20example">Code</a>
 
 # Tankerkoenig Card
-![image](https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/315f718a-9d13-498a-84dc-270dc3613523)
-
+<img width="379" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/315f718a-9d13-498a-84dc-270dc3613523 />
 <p></p>
 <a href=https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/Tankerkoenig-Mushroom-Card>Code</a>
 
