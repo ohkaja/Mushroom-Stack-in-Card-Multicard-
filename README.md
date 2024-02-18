@@ -26,7 +26,7 @@ Lovelace Plugins needed:
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20energymeter">Code</a>
 
 # Animated Energymeter example
-<img width="379" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/5782324a-f9d8-4bee-aea1-6ac33fdac23c">
+<img width="382" alt="image" src="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/assets/93218188/5782324a-f9d8-4bee-aea1-6ac33fdac23c">
 <p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/animated-live-sensor-activity">Code</a>
 
