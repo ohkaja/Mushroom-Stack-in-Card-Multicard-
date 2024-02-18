@@ -1,0 +1,107 @@
+type: custom:stack-in-card
+title: null
+mode: vertical
+cards:
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-template-card
+                icon: >-
+                  {% if is_state('input_boolean.hlp_solarpowered', 'on')
+                  %}mdi:white-balance-sunny{% else %}mdi:transmission-tower{%
+                  endif %}
+                icon_color: >-
+                  {% if is_state('input_boolean.hlp_solarpowered', 'on')
+                  %}green{% else %}red{% endif %}
+                primary: null
+                secondary: null
+                tap_action:
+                  action: none
+                multiline_secondary: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      overflow: visible;
+                      border: none;
+                      width:200%;
+                      }
+                    :host {
+                      --mush-icon-size: 160px;
+                      height: 66px;
+                      margin-left: -75px !important;
+                      margin-top: -35px !important;
+                      animation: solarpulse 2s ease infinite; 
+                      
+                      }
+                    @keyframes solarpulse {
+                      0% {
+                        opacity: 0.7;
+                      }
+                      50% {
+                        opacity: 1;
+                      }
+                      100% {
+                        opacity: 0.6;
+                      }
+                    }
+          - type: horizontal-stack
+            cards:
+              - type: entity
+                name: Produktion heute
+                entity: sensor.energy_production_today
+                icon: none
+                state_color: false
+                card_mod:
+                  style: |
+                    ha-card {
+                       border: none !important;
+                       margin-left: -120px;
+                       margin-top: 10px;
+                     }
+              - type: entity
+                name: morgen
+                entity: sensor.energy_production_tomorrow
+                icon: none
+                state_color: false
+                card_mod:
+                  style: |
+                    ha-card {
+                       border: none !important;
+                       margin-left: -90px;
+                       margin-top: 10px;
+                     }
+      - type: horizontal-stack
+        cards:
+          - type: picture-elements
+            image: local/floorplan/00/00_base_solar-house.png
+            elements:
+              - type: image
+                entity: sensor.hostname_iot_inverter_01_inverter_state
+                state_image:
+                  FeedIn: local/floorplan/00/00_solarpower_on.png
+                  StartUp: local/floorplan/00/00_solarpower_off.png
+                  Shutdown: local/floorplan/00/00_solarpower_off.png
+                  'Off': local/floorplan/00/00_solarpower_off.png
+                  Standby: local/floorplan/00/00_solarpower_off.png
+                style:
+                  top: 30.8%
+                  left: 45.9%
+                  width: 44.8%
+                  mix-blend-mode: screen
+                  opacity: 0.9
+                tap_action:
+                  action: none
+            card_mod:
+              style: |
+                ha-card {
+                   border: none !important;
+                   margin-top: -15px;
+                }
+card_mod:
+  style: |
+    ha-card {
+    max-height: 245px !important;
+    }
