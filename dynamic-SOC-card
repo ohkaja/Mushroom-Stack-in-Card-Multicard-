@@ -1,0 +1,67 @@
+type: custom:stack-in-card
+title: null
+mode: vertical
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-template-card
+        icon: mdi:battery-charging
+        primary: '{{ states(''sensor.iot_inverter_01_battery_soc'') }} %'
+        secondary: >-
+          {% if states('sensor.hostname_iot_inverter_01_home_power_from_battery') > states('sensor.iot_inverter_01_battery_soc') %}
+          {% set remaining_hours = (((states('input_number.hlp_pv_battery_size') | float) * ((states('sensor.iot_inverter_01_battery_soc') | float) / 100)) / states('sensor.hostname_iot_inverter_01_home_power') | float) | round(0) %}
+            {% if remaining_hours > 1 %}
+              {{ remaining_hours }} Stunden
+            {% else %}
+              weniger als 1 Stunde
+            {% endif %}
+          {% endif %} Restlaufzeit
+        icon_color: >-
+          {% set battery_soc = states('sensor.iot_inverter_01_battery_soc') | int %}
+          {% if battery_soc > 75 %}
+            green
+          {% elif battery_soc > 50 %}
+            yellow
+          {% elif battery_soc > 25 %}
+            orange
+          {% else %}
+            red
+          {% endif %}
+        tap_action: none
+        card_mod:
+          style: |
+            ha-card {
+            border: none;
+            }
+            :host {
+              --mush-icon-size: 100px;
+              min-height: 100px !important;
+              margin-left: -55px !important;
+              margin-top: -20px !important;
+            }
+      - type: custom:mushroom-template-card
+        card_mod:
+          style: |-
+            ha-card {
+              border: 1px solid dark-green;
+              height: 90px !important;
+              width: {{ (states('sensor.iot_inverter_01_battery_soc') | int) * 1}}% !important;
+              left: -1px;
+              top: -105px;
+              border-top-right-radius: 15px 15px !important;
+              border-bottom-right-radius: 15px 15px !important;
+              opacity: 0.2;
+              background-color:
+                {% set battery_soc = states('sensor.iot_inverter_01_battery_soc') | int %}
+                {% if battery_soc > 75 %}
+                  green !important;
+                {% elif battery_soc > 50 %}
+                  yellow !important;
+                {% elif battery_soc > 25 %}
+                  orange !important;
+                {% else %}
+                  red !important;;
+                {% endif %}
+             }
+card_mod:
+  style: 'ha-card {  max-height: 90px !important;}'
