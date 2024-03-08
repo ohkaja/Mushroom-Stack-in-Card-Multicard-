@@ -8,16 +8,25 @@ cards:
         icon: mdi:battery-charging
         primary: '{{ states(''sensor.iot_inverter_01_battery_soc'') }} %'
         secondary: >-
-          {% if states('sensor.hostname_iot_inverter_01_home_power_from_battery') > states('sensor.iot_inverter_01_battery_soc') %}
+
+          {% if states('sensor.hostname_iot_inverter_01_home_power_from_battery') > '10' %}
+
           {% set remaining_hours = (((states('input_number.hlp_pv_battery_size') | float) * ((states('sensor.iot_inverter_01_battery_soc') | float) / 100)) / states('sensor.hostname_iot_inverter_01_home_power') | float) | round(0) %}
-            {% if remaining_hours > 1 %}
-              {{ remaining_hours }} Stunden
+
+          {% if remaining_hours > 1 %}
+            {{ remaining_hours }} Stunden Restlaufzeit
             {% else %}
-              weniger als 1 Stunde
-            {% endif %}
-          {% endif %} Restlaufzeit
+              weniger als 1 Stunde Restlaufzeit
+            {% endif %}          
+          {% endif %}
+
+          {% if states('sensor.hostname_iot_inverter_01_pv_to_battery_power') | float > 100 %}
+            laden ...
+          {% endif %}
         icon_color: >-
           {% set battery_soc = states('sensor.iot_inverter_01_battery_soc') | int %}
+
+
           {% if battery_soc > 75 %}
             green
           {% elif battery_soc > 50 %}
@@ -53,6 +62,7 @@ cards:
               opacity: 0.2;
               background-color:
                 {% set battery_soc = states('sensor.iot_inverter_01_battery_soc') | int %}
+
                 {% if battery_soc > 75 %}
                   green !important;
                 {% elif battery_soc > 50 %}
