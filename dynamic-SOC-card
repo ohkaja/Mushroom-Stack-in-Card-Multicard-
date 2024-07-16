@@ -1,3 +1,5 @@
+#HA < 2024.07.0
+
 type: custom:stack-in-card
 title: null
 mode: vertical
@@ -44,12 +46,12 @@ cards:
           style: |
             ha-card {
             border: none;
+            left: -40px !important;
+            top: -15px !important;
             }
             :host {
               --mush-icon-size: 100px;
               min-height: 100px !important;
-              margin-left: -55px !important;
-              margin-top: -20px !important;
             }
       - type: custom:mushroom-template-card
         card_mod:
@@ -59,7 +61,7 @@ cards:
               height: 90px !important;
               width: {{ (states('sensor.iot_inverter_01_battery_soc') | int) * 1}}% !important;
               left: -1px;
-              top: -105px;
+              top: -134px;
               border-top-right-radius: 15px 15px !important;
               border-bottom-right-radius: 15px 15px !important;
               opacity: 0.2;
