@@ -61,7 +61,7 @@ Lovelace Plugins needed:
 
 
 # Carnet Siri Commands
-
+https://github.com/user-attachments/assets/35cf9a42-ba64-4048-a0a5-640dfaa662bf
 <p></p>
 Needs an open/ close automation or an combined (trigger ID) automation to work.
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20Volkswagen%20Carnet%20Siri%20command">Code Siri commands</a>
