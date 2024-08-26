@@ -1,0 +1,53 @@
+# HA AUTOMATIONS
+# Open (unlock) the car with Siri (Companion App required)
+alias: IOSACTION-VW-öffnen
+description: ""
+trigger:
+  - platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: vw öffnen
+condition:
+  - condition: state
+    entity_id: person.CARNAME
+    state: home
+action:
+  - action: lock.unlock
+    target:
+      entity_id:
+        - lock.CARNAME_door_locked
+    data: {}
+mode: single
+
+# Close (lock) the car with Siri (Companion App required)
+
+alias: IOSACTION-VW-öffnen
+description: ""
+trigger:
+  - platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: vw öffnen
+condition:
+  - condition: state
+    entity_id: person.CARNAME
+    state: home
+action:
+  - action: lock.unlock
+    target:
+      entity_id:
+        - lock.CARNAME_door_locked
+    data: {}
+mode: single
+
+# COMPANION APP ACTIONS
+- platform: event
+event_type: ios.action_fired
+event_data:
+actionID: GUID
+actionName: vw schließen
+sourceDeviceID: PHONENAME
+sourceDeviceName: PHONENAME
+sourceDevicePermanentID: PHONEGUID
+triggerSource: preview
+
