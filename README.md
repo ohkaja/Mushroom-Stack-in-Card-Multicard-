@@ -58,3 +58,12 @@ Lovelace Plugins needed:
 <img width="372" alt="image" src="https://github.com/user-attachments/assets/bb2a956b-4d41-4b5d-a8a3-43a80c3ff20b">
 <p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20Volkswagen-Carnet">Code</a>
+
+
+# Carnet Siri Commands
+
+<p></p>
+Needs an open/ close automation or an combined (trigger ID) automation to work.
+<a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20Volkswagen%20Carnet%20Siri%20command">Code Siri commands</a>
+
+
