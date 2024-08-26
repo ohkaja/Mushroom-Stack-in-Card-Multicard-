@@ -1,0 +1,125 @@
+type: custom:stack-in-card
+title: null
+mode: vertical
+cards:
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: map
+            entities:
+              - entity: person.CAR-PERSON #Add Person to HA and asign geolocation from your car as tracker
+            theme_mode: auto
+            default_zoom: 17
+            aspect_ratio: '2:1.3'
+            card_mod:
+              style: |
+                ha-card {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+
+                }
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: none
+                icon: mdi:car-key
+                icon_height: 48px
+                entity: lock.CARNAME_door_locked
+                hold_action:
+                  action: toggle
+                show_state: true
+                card_mod:
+                  style: |
+                    ha-card {
+                    border: none;
+                    }
+              - show_name: false
+                show_icon: true
+                type: button
+                tap_action:
+                  action: none
+                entity: binary_sensor.CARNAME_windows_closed
+                icon: mdi:car-door-lock
+                show_state: true
+                hold_action:
+                  action: none
+                icon_height: 48px
+                card_mod:
+                  style: |
+                    ha-card {
+                    border: none;
+                    }
+              - type: gauge
+                entity: sensor.CARNAME_fuel_level
+                needle: false
+                severity:
+                  green: 70
+                  yellow: 20
+                  red: 0
+                name: ' '
+                min: 0
+                max: 100
+                tap_action:
+                  action: none
+                card_mod:
+                  style: |
+                    ha-card {
+                    border: none;
+                    }
+      - type: horizontal-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.CARNAME_combustion_range
+                name: Reichweite
+                icon: mdi:map-marker-distance
+                card_mod:
+                  style: |
+                    :host {
+                    --paper-item-icon-color: green;
+                    } 
+              - entity: sensor.CARNAME_last_trip_average_fuel_consumption
+                name: Durchschnittsverbrauch
+                card_mod:
+                  style: |
+                    :host {
+                    --paper-item-icon-color: orange;
+                    } 
+              - entity: sensor.CARNAME_service_inspection_distance
+                name: Kilometer bis Service
+                icon: mdi:tools
+                card_mod:
+                  style: |
+                    :host {
+                    --paper-item-icon-color: yellow;
+                    } 
+              - entity: sensor.CARNAME_adblue_level
+                name: Ad-Blue Reichweite
+                icon: mdi:barrel
+                card_mod:
+                  style: |
+                    :host {
+                    --paper-item-icon-color: blue;
+                    } 
+              - entity: sensor.CARNAME_odometer
+                icon: mdi:counter
+                name: Gesamtkilometer
+              - entity: sensor.CARNAME_last_data_refresh
+                name: letzte Aktualisierung
+                icon: mdi:update
+                secondary_info: none
+            card_mod:
+              style: |
+                ha-card {
+                border-bottom: none;
+                border-left: none;
+                border-right: none;
+
+                }
