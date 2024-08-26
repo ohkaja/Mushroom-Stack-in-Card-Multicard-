@@ -33,7 +33,7 @@ cards:
                 icon_height: 48px
                 entity: lock.CARNAME_door_locked
                 hold_action:
-                  action: toggle
+                  action: toggle # only toggle when long pressed to prevent missuse
                 show_state: true
                 card_mod:
                   style: |
