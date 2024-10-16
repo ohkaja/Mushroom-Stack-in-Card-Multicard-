@@ -1,0 +1,1634 @@
+alias: HOUSE-HEIZUNG_GENERAL
+description: ""
+triggers:
+  - alias: WEEKDAY AN 06:00
+    at: "06:00:00"
+    id: WORKDAY-MORNING-AN
+    trigger: time
+  - alias: WEEKDAY AUS 07:00
+    at: "07:00:00"
+    id: WORKDAY-MORNING-AUS
+    trigger: time
+  - at: "16:00:00"
+    id: WORKDAY-EVENING-AN
+    alias: WEEKDAY AN 16:00
+    trigger: time
+  - alias: WEEKDAY AUS 21:00
+    at: "21:00:00"
+    id: WORKDAY-EVENING-AUS
+    trigger: time
+  - alias: WEEKEND AN 08:00
+    at: "08:00:00"
+    id: WEEKEND-MORNING-AN
+    trigger: time
+  - alias: WEEKEND AUS 21:30
+    at: "21:30:00"
+    id: WEEKEND-EVENING-AUS
+    trigger: time
+  - alias: ABWESENHEIT AUS => AN
+    entity_id:
+      - input_boolean.abwesend
+    from: "off"
+    to: "on"
+    id: ABWESENHEIT-AN
+    trigger: state
+  - alias: URLAUBSMODUS AUS => AN
+    entity_id:
+      - input_boolean.urlaubsmodus
+    from: "off"
+    to: "on"
+    id: URLAUBSMODUS-AN
+    trigger: state
+  - entity_id:
+      - input_boolean.urlaubsmodus
+    from: "on"
+    to: "off"
+    id: URLAUBSMODUS-AUS
+    alias: URLAUBSMODUS AN => AUS
+    trigger: state
+  - alias: SOMMERMODUS AUS => AN
+    entity_id:
+      - input_boolean.sommer_modus
+    from: "off"
+    to: "on"
+    id: SOMMERMODUS-AN
+    trigger: state
+  - alias: SOMMERMODUS AN => AUS
+    entity_id:
+      - input_boolean.sommer_modus
+    from: "on"
+    to: "off"
+    id: SOMMERMODUS-AUS
+    for:
+      hours: 6
+      minutes: 0
+      seconds: 0
+    trigger: state
+  - alias: THERMOSTAT-BUERO
+    entity_id:
+      - light.signify_netherlands_b_v_lct015_huelight
+    id: THERMOSTAT-BUERO-LICHT
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    trigger: state
+  - alias: THERMOSTAT-WOHNZIMMER
+    entity_id:
+      - light.f2_wohnzimmer_vorn
+      - light.iot_f2_wohnzimmer_gross_switch_0
+      - light.ikea_of_sweden_tradfri_bulb_e14_w_op_ch_400lm_light
+    id: THERMOSTAT-WOHNZIMMER-LICHT
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    to: "on"
+    trigger: state
+  - alias: THERMOSTAT-ESSBEREICH
+    entity_id:
+      - light.f2_kuche
+    id: THERMOSTAT-ESSBEREICH-LICHT
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    trigger: state
+  - alias: THERMOSTAT-ELENA
+    entity_id:
+      - light.grp_f1_kz_elena
+    id: THERMOSTAT-ELENA-LICHT
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    trigger: state
+  - alias: THERMOSTAT-ALEXANDER
+    entity_id:
+      - light.grp_f1_kz_alexander
+    id: THERMOSTAT-ALEXANDER-LICHT
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    to: "on"
+    trigger: state
+  - alias: THERMOSTATE BETAETIGT
+    entity_id:
+      - climate.thermostat_bad_f1
+      - climate.thermostat_bad
+      - climate.thermostat_buero_f2
+      - climate.thermostat_kuche
+      - climate.thermostat_schlafzimmer
+      - climate.thermostat_wohnzimmer_1
+      - climate.thermostat_zimmer_elena
+      - climate.thermostat_zimmer_alex_1
+      - climate.thermostat_zimmer_alex_2
+      - climate.thermostat_wohnzimmer_2
+    id: THERMOSTATE-CHANGED
+    trigger: state
+  - alias: THERMOSTAT-MAXOFF
+    entity_id:
+      - sensor.f2_kueche_aktuelle_temperatur
+      - sensor.f2_buero_aktuelle_temperatur
+      - sensor.f2_schlafzimmer_aktuelle_temperatur
+      - sensor.f2_wohnzimmer_aktuelle_temperatur
+      - sensor.f1_kz_alexander_aktuelle_temperatur
+    to: "22.0"
+    id: THERMOSTAT-MAXOFF
+    trigger: state
+  - alias: FENSTER-BETAETIGUNG
+    entity_id:
+      - binary_sensor.fenstersensor_f2_buero_opening
+      - binary_sensor.fenstersensor_f2_schlafzimmer_opening
+      - binary_sensor.kontakt_f1_bad_alarm
+      - binary_sensor.kontakt_f2_bad_alarm
+      - binary_sensor.grp_fenstersensoren_f1_kz_alex
+    id: FENSTER-BETAETIGUNG
+    trigger: state
+  - alias: WARTUNG-HEIZUNG-AN
+    entity_id:
+      - input_boolean.hlp_heizung_wartung
+    id: WARTUNG-HEIZUNG-AN
+    from: "off"
+    to: "on"
+    trigger: state
+  - alias: WARTUNG-HEIZUNG-AUS
+    entity_id:
+      - input_boolean.hlp_heizung_wartung
+    id: WARTUNG-HEIZUNG-AUS
+    from: "on"
+    to: "off"
+    trigger: state
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - alias: WORKDAYS-MORGENS-AN
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - WORKDAY-MORNING-AN
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: "on"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.urlaubsmodus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: comfort
+            alias: Thermostat Bad F1
+          - alias: Thermostat Bad F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Elena
+            if:
+              - condition: numeric_state
+                entity_id: counter.bewohner_f2_kz_elena
+                below: 1
+            then:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: eco
+            else:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - if:
+                  - condition: numeric_state
+                    entity_id: counter.bewohner_f2_kz_alexander
+                    below: 1
+                then:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: eco
+                else:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: comfort
+      - conditions:
+          - alias: WORKDAYS-MORGENS-AUS
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - WORKDAY-MORNING-AUS
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: "on"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.urlaubsmodus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - alias: Thermostat Bad F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Bad F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: comfort
+          - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+            domain: climate
+            entity_id: climate.thermostat_zimmer_elena
+            type: set_preset_mode
+            preset_mode: eco
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: WORKDAYS-ABENDS-AN
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - WORKDAY-EVENING-AN
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: "on"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.urlaubsmodus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_preset_mode
+            preset_mode: comfort
+          - if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: comfort
+            alias: Thermostat Bad F1
+          - if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: comfort
+            alias: Thermostat Bad F2
+          - alias: Thermostat Schlafzimmer
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_schlafzimmer_opening
+                state: "on"
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Elena
+            if:
+              - condition: numeric_state
+                entity_id: counter.bewohner_f2_kz_elena
+                below: 1
+            then:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: eco
+            else:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Wohnzimmer
+            if:
+              - condition: numeric_state
+                entity_id: counter.bewohner_f2_wohnzimmer
+                below: "1"
+            then:
+              - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+                domain: climate
+                entity_id: climate.thermostat_wohnzimmer_1
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - if:
+                  - condition: numeric_state
+                    entity_id: counter.bewohner_f2_kz_alexander
+                    below: 1
+                then:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: eco
+                else:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: comfort
+      - conditions:
+          - alias: WORKDAYS-ABENDS-AUS / URLAUBSMODUS-AUS
+            condition: or
+            conditions:
+              - condition: and
+                conditions:
+                  - alias: Ausgelöst durch WORKDAY-EVENING-AUS
+                    condition: or
+                    conditions:
+                      - condition: trigger
+                        id:
+                          - WORKDAY-EVENING-AUS
+                          - URLAUBSMODUS-AUS
+                  - condition: state
+                    entity_id: input_boolean.sommer_modus
+                    state: "off"
+                  - condition: state
+                    entity_id: binary_sensor.workday_sensor
+                    state: "on"
+                    alias: WORKDAYSENSOR-AN
+                  - condition: state
+                    entity_id: input_boolean.abwesend
+                    state: "off"
+                  - condition: state
+                    entity_id: input_boolean.urlaubsmodus
+                    state: "off"
+                    enabled: false
+                  - condition: state
+                    entity_id: input_boolean.hlp_heizung_wartung
+                    state: "off"
+        sequence:
+          - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+            domain: climate
+            entity_id: climate.thermostat_zimmer_elena
+            type: set_preset_mode
+            preset_mode: eco
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_preset_mode
+            preset_mode: eco
+          - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_1
+            type: set_preset_mode
+            preset_mode: eco
+          - alias: Thermostat Bad F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Bad F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Schlafzimmer
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_schlafzimmer_opening
+                state: "on"
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: WEEKEND-MORGENS-AN
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - WEEKEND-MORNING-AN
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: "off"
+                enabled: true
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.urlaubsmodus
+                state: "off"
+                enabled: false
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_preset_mode
+            preset_mode: comfort
+          - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_1
+            type: set_preset_mode
+            preset_mode: comfort
+          - alias: Thermostat Bad F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Bad F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Schlafzimmer
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_schlafzimmer_opening
+                state: "on"
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Elena
+            if:
+              - condition: numeric_state
+                entity_id: counter.bewohner_f2_kz_elena
+                below: 1
+            then:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: eco
+            else:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - if:
+                  - condition: numeric_state
+                    entity_id: counter.bewohner_f2_kz_alexander
+                    below: 1
+                then:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: eco
+                else:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: comfort
+      - conditions:
+          - alias: WEEKEND-ABENDS-AUS
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - WEEKEND-EVENING-AUS
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.workday_sensor
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.urlaubsmodus
+                state: "off"
+                enabled: false
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+            domain: climate
+            entity_id: climate.thermostat_zimmer_elena
+            type: set_preset_mode
+            preset_mode: eco
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_preset_mode
+            preset_mode: eco
+          - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_1
+            type: set_preset_mode
+            preset_mode: eco
+          - alias: Thermostat Bad F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Bad F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Schlafzimmer
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_schlafzimmer_opening
+                state: "on"
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: URLAUBSMODUS-AN
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - URLAUBSMODUS-AN
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.urlaubsmodus
+                state: "on"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_preset_mode
+            preset_mode: comfort
+          - alias: Thermostat Bad F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Bad F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Schlafzimmer
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_schlafzimmer_opening
+                state: "on"
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Thermostat Elena
+            if:
+              - condition: numeric_state
+                entity_id: counter.bewohner_f2_kz_elena
+                below: 1
+            then:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: eco
+            else:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: comfort
+          - if:
+              - condition: numeric_state
+                entity_id: counter.bewohner_f2_wohnzimmer
+                above: 0
+            then:
+              - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+                domain: climate
+                entity_id: climate.thermostat_wohnzimmer_1
+                type: set_preset_mode
+                preset_mode: comfort
+            alias: Wohnzimmer
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - if:
+                  - condition: numeric_state
+                    entity_id: counter.bewohner_f2_kz_alexander
+                    below: 1
+                then:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: eco
+                else:
+                  - device_id: e03d9b80cde409fde6171478654cd0fb
+                    domain: climate
+                    entity_id: 8933aba6aea5206c43cf96d864f70f23
+                    type: set_preset_mode
+                    preset_mode: comfort
+      - conditions:
+          - alias: ABWESENHEIT-AN
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - ABWESENHEIT-AN
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.urlaubsmodus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+            domain: climate
+            entity_id: climate.thermostat_zimmer_elena
+            type: set_preset_mode
+            preset_mode: eco
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_preset_mode
+            preset_mode: eco
+          - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_1
+            type: set_preset_mode
+            preset_mode: eco
+          - alias: Thermostat Bad F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Bad F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Schlafzimmer
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_schlafzimmer_opening
+                state: "on"
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Büro
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_buero_opening
+                state: "on"
+            then:
+              - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+                domain: climate
+                entity_id: 0ae4b488a7bf8d63572a079a6ef47a53
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+                domain: climate
+                entity_id: 0ae4b488a7bf8d63572a079a6ef47a53
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Alexander
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: SOMMERMODUS-THERMOSTATE-AUS
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - THERMOSTATE-CHANGED
+                  - SOMMERMODUS-AN
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "on"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - device_id: 018c2511fcd123351b86ac30f6c1e005
+            domain: climate
+            entity_id: climate.thermostat_bad
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 018c2511fcd123351b86ac30f6c1e005
+            domain: climate
+            entity_id: climate.thermostat_bad
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+            domain: climate
+            entity_id: climate.thermostat_bad_f1
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+            domain: climate
+            entity_id: climate.thermostat_buero_f2
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 692308e1b50e453d9382561c43a1b2c8
+            domain: climate
+            entity_id: climate.thermostat_schlafzimmer
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_1
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+            domain: climate
+            entity_id: climate.thermostat_zimmer_elena
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: e03d9b80cde409fde6171478654cd0fb
+            domain: climate
+            entity_id: climate.thermostat_zimmer_alex_1
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 6d2a424449f659f3aa24bacd5d2d1bba
+            domain: climate
+            entity_id: climate.thermostat_zimmer_alex_2
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 0359f5c5501131347a1a93dd3738132f
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_2
+            type: set_hvac_mode
+            hvac_mode: "off"
+      - conditions:
+          - alias: THERMOSTAT-MAXIMALE-TEMPERATUR
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - THERMOSTAT-MAXOFF
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - alias: Thermostat Buero
+            if:
+              - condition: numeric_state
+                entity_id: sensor.f2_buero_aktuelle_temperatur
+                above: 22
+            then:
+              - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+                domain: climate
+                entity_id: 0ae4b488a7bf8d63572a079a6ef47a53
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Kueche
+            if:
+              - condition: numeric_state
+                entity_id: sensor.f2_kueche_aktuelle_temperatur
+                above: 22
+            then:
+              - device_id: fac2da23b14efd122cb1f84c3767ee48
+                domain: climate
+                entity_id: 611372b4341170045b2e2c9547b3883e
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Wohnzimmer
+            if:
+              - condition: numeric_state
+                entity_id: sensor.f2_wohnzimmer_aktuelle_temperatur
+                above: 22
+            then:
+              - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+                domain: climate
+                entity_id: 18f7591042d04cb93c5409156b350530
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Schlafzimmer
+            if:
+              - condition: numeric_state
+                entity_id: sensor.f2_schlafzimmer_aktuelle_temperatur
+                above: 22
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: Thermostat Alexander
+            if:
+              - condition: numeric_state
+                entity_id: sensor.f1_kz_alexander_aktuelle_temperatur
+                above: 22
+            then:
+              - device_id: 29ca2f977c5ebf56a88a428d99660a44
+                domain: climate
+                entity_id: 337d288d12e88a971f8e6a84f29efeb0
+                type: set_preset_mode
+                preset_mode: comfort
+      - conditions:
+          - alias: FENSTER-BETAETIGUNG
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - FENSTER-BETAETIGUNG
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_buero_opening
+                state: "on"
+            then:
+              - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+                domain: climate
+                entity_id: 0ae4b488a7bf8d63572a079a6ef47a53
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+                domain: climate
+                entity_id: 0ae4b488a7bf8d63572a079a6ef47a53
+                type: set_preset_mode
+                preset_mode: eco
+            alias: FENSTER-BUERO
+          - alias: FENSTER-SCHLAFZIMMER
+            if:
+              - condition: state
+                entity_id: binary_sensor.fenstersensor_f2_schlafzimmer_opening
+                state: "on"
+            then:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 692308e1b50e453d9382561c43a1b2c8
+                domain: climate
+                entity_id: 528581b0586de56c19382febfc58540e
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: FENSTER-BAD-F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f1_bad_alarm
+                state: "on"
+            then:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+                domain: climate
+                entity_id: b4d80b6604df02fa25ce7391e282e602
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: FENSTER-BAD-F2
+            if:
+              - condition: state
+                entity_id: binary_sensor.kontakt_f2_bad_alarm
+                state: "on"
+            then:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 018c2511fcd123351b86ac30f6c1e005
+                domain: climate
+                entity_id: b2aa385e9d96c299311e1ebdda1ccebf
+                type: set_preset_mode
+                preset_mode: eco
+          - alias: FENSTER-KZ ALEX-F1
+            if:
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "on"
+            then:
+              - device_id: 29ca2f977c5ebf56a88a428d99660a44
+                domain: climate
+                entity_id: 337d288d12e88a971f8e6a84f29efeb0
+                type: set_hvac_mode
+                hvac_mode: "off"
+            else:
+              - device_id: 29ca2f977c5ebf56a88a428d99660a44
+                domain: climate
+                entity_id: 337d288d12e88a971f8e6a84f29efeb0
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: THERMOSTAT-BUERO
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - THERMOSTAT-BUERO-LICHT
+              - condition: state
+                entity_id: person.kaja
+                state: home
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - alias: Licht an
+            if:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: light.signify_netherlands_b_v_lct015_huelight
+                    state: "on"
+                  - type: is_not_open
+                    condition: device
+                    device_id: ee3a8805ea4c3fa4cb80501fdfd8ef0c
+                    entity_id: 57d025d9fa7d8ccf0dc27d11601fe918
+                    domain: binary_sensor
+            then:
+              - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+                domain: climate
+                entity_id: 0ae4b488a7bf8d63572a079a6ef47a53
+                type: set_preset_mode
+                preset_mode: comfort
+          - alias: Licht aus
+            if:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: light.signify_netherlands_b_v_lct015_huelight
+                    state: "off"
+                  - condition: state
+                    entity_id: binary_sensor.fenstersensor_f2_buero_opening
+                    state: "off"
+            then:
+              - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+                domain: climate
+                entity_id: 0ae4b488a7bf8d63572a079a6ef47a53
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: THERMOSTAT-ESSBEREICH
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - THERMOSTAT-ESSBEREICH-LICHT
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: time
+                before: "21:00:00"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - if:
+              - condition: state
+                state: "on"
+                entity_id: light.f2_kuche
+            then:
+              - device_id: fac2da23b14efd122cb1f84c3767ee48
+                domain: climate
+                entity_id: 611372b4341170045b2e2c9547b3883e
+                type: set_preset_mode
+                preset_mode: comfort
+            else:
+              - device_id: fac2da23b14efd122cb1f84c3767ee48
+                domain: climate
+                entity_id: 611372b4341170045b2e2c9547b3883e
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: THERMOSTAT-ELENA
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - THERMOSTAT-ELENA-LICHT
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+                enabled: true
+              - condition: time
+                before: "21:00:00"
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+        sequence:
+          - if:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: light.grp_f1_kz_elena
+                    state: "on"
+            then:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: comfort
+            else:
+              - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+                domain: climate
+                entity_id: e182dbf205cb06c6afc5045a954cc8ad
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - alias: THERMOSTAT-ALEXANDER
+            condition: and
+            conditions:
+              - condition: trigger
+                id:
+                  - THERMOSTAT-ALEXANDER-LICHT
+              - condition: state
+                entity_id: input_boolean.sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: input_boolean.abwesend
+                state: "off"
+              - condition: time
+                before: "21:00:00"
+                enabled: true
+              - condition: state
+                entity_id: input_boolean.hlp_heizung_wartung
+                state: "off"
+              - condition: state
+                entity_id: binary_sensor.grp_fenstersensoren_f1_kz_alex
+                state: "off"
+        sequence:
+          - if:
+              - condition: state
+                entity_id: light.grp_f1_kz_alexander
+                state: "on"
+            then:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_preset_mode
+                preset_mode: comfort
+            else:
+              - device_id: e03d9b80cde409fde6171478654cd0fb
+                domain: climate
+                entity_id: 8933aba6aea5206c43cf96d864f70f23
+                type: set_preset_mode
+                preset_mode: eco
+      - conditions:
+          - condition: trigger
+            id:
+              - THERMOSTAT-WOHNZIMMER-LICHT
+          - condition: state
+            entity_id: binary_sensor.workday_sensor
+            state: "on"
+          - condition: time
+            after: "09:00:00"
+          - condition: state
+            entity_id: input_boolean.hlp_heizung_wartung
+            state: "off"
+        sequence:
+          - if:
+              - condition: and
+                conditions:
+                  - condition: time
+                    before: "21:00:00"
+            then:
+              - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+                domain: climate
+                entity_id: 18f7591042d04cb93c5409156b350530
+                type: set_preset_mode
+                preset_mode: comfort
+            else: []
+        alias: THERMOSTAT WOHNZIMMER
+      - conditions:
+          - condition: trigger
+            id:
+              - WARTUNG-HEIZUNG-AN
+        sequence:
+          - device_id: 018c2511fcd123351b86ac30f6c1e005
+            domain: climate
+            entity_id: climate.thermostat_bad
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 018c2511fcd123351b86ac30f6c1e005
+            domain: climate
+            entity_id: climate.thermostat_bad
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+            domain: climate
+            entity_id: climate.thermostat_bad_f1
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+            domain: climate
+            entity_id: climate.thermostat_buero_f2
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 692308e1b50e453d9382561c43a1b2c8
+            domain: climate
+            entity_id: climate.thermostat_schlafzimmer
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_1
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+            domain: climate
+            entity_id: climate.thermostat_zimmer_elena
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: e03d9b80cde409fde6171478654cd0fb
+            domain: climate
+            entity_id: climate.thermostat_zimmer_alex_1
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 6d2a424449f659f3aa24bacd5d2d1bba
+            domain: climate
+            entity_id: climate.thermostat_zimmer_alex_2
+            type: set_hvac_mode
+            hvac_mode: "off"
+          - device_id: 0359f5c5501131347a1a93dd3738132f
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_2
+            type: set_hvac_mode
+            hvac_mode: "off"
+      - conditions:
+          - condition: trigger
+            id:
+              - WARTUNG-HEIZUNG-AUS
+        sequence:
+          - device_id: 018c2511fcd123351b86ac30f6c1e005
+            domain: climate
+            entity_id: climate.thermostat_bad
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 018c2511fcd123351b86ac30f6c1e005
+            domain: climate
+            entity_id: climate.thermostat_bad
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 4206088d1210198bfd5ad75f5ef4c5ef
+            domain: climate
+            entity_id: climate.thermostat_bad_f1
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 2b6e98d5ac53c76829ffe07b7e4ee55e
+            domain: climate
+            entity_id: climate.thermostat_buero_f2
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: fac2da23b14efd122cb1f84c3767ee48
+            domain: climate
+            entity_id: climate.thermostat_kuche
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 692308e1b50e453d9382561c43a1b2c8
+            domain: climate
+            entity_id: climate.thermostat_schlafzimmer
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 99ad618b75453cd9bdcccbeb0c9b5e2d
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_1
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 458bf4517b2ed9acfa6bb4c6115e4838
+            domain: climate
+            entity_id: climate.thermostat_zimmer_elena
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: e03d9b80cde409fde6171478654cd0fb
+            domain: climate
+            entity_id: climate.thermostat_zimmer_alex_1
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 6d2a424449f659f3aa24bacd5d2d1bba
+            domain: climate
+            entity_id: climate.thermostat_zimmer_alex_2
+            type: set_hvac_mode
+            hvac_mode: heat
+          - device_id: 0359f5c5501131347a1a93dd3738132f
+            domain: climate
+            entity_id: climate.thermostat_wohnzimmer_2
+            type: set_hvac_mode
+            hvac_mode: heat
+mode: parallel
+max: 15
