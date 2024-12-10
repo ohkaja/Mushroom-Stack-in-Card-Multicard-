@@ -1,0 +1,73 @@
+alias: ALARM-RAUCHMELDER-AKTIV
+description: ""
+triggers:
+  - entity_id:
+      - binary_sensor.grp_rauchmelder_rauch_alarm
+    from: "off"
+    to: "on"
+    id: smokeaalarm-on
+    trigger: state
+  - entity_id:
+      - binary_sensor.grp_rauchmelder_rauch_alarm
+    from: "on"
+    to: "off"
+    id: smokeaalarm-off
+    trigger: state
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - smokeaalarm-on
+        sequence:
+          - metadata: {}
+            data: {}
+            target:
+              entity_id:
+                - siren.rauchmelder_f2_flur_siren
+                - siren.rauchmelder_f2_schlafzimmer_siren
+                - siren.rauchmelder_f0_flur_siren
+                - siren.rauchmelder_f1_flur_siren_2
+            action: siren.turn_on
+          - data:
+              title: FEUERALARM FEUERALARM FEUERALARM
+              message: EIN RAUCHMELDER WURDE AUSGELÖST!
+              data:
+                tag: alarm-house-fire
+                push:
+                  sound:
+                    name: alarm.caf
+                    critical: 1
+                    volume: 1
+                url: /lovelace/kamera
+            action: notify.mobile_app_kajas_iphone
+          - device_id: 1d2b5b4e5ee72ca99cd7ff3d5dd6a6cf
+            domain: select
+            entity_id: e050156e627655e844828dd45841b219
+            type: select_option
+            option: Strobe
+          - action: script.turn_on
+            metadata: {}
+            data: {}
+            target:
+              entity_id: script.neues_skript
+      - conditions:
+          - condition: trigger
+            id:
+              - smokeaalarm-off
+        sequence:
+          - metadata: {}
+            data: {}
+            target:
+              entity_id:
+                - siren.rauchmelder_f2_flur_siren
+                - siren.rauchmelder_f2_schlafzimmer_siren
+                - siren.rauchmelder_f0_flur_siren
+                - siren.rauchmelder_f1_flur_siren_2
+            action: siren.turn_off
+          - type: turn_off
+            device_id: 1d2b5b4e5ee72ca99cd7ff3d5dd6a6cf
+            entity_id: db8f56982e0a805ea0b069f32a904340
+            domain: light
+mode: single
