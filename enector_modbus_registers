@@ -1,0 +1,39 @@
+    - name: wallbox_lademodus_modbus #Lademodus 1 Lock Mode; 2 Power Mode; 3 Solar Pure Mode; 4 Solar Plus Mode
+      unique_id: wallbox_lademodus_modbus
+      slave: 1
+      address: 40994
+      scan_interval: 5
+      input_type: holding
+      data_type: uint16
+      device_class: power_factor
+      
+    - name: wallbox_statuscode_modbus
+      unique_id: wallbox_statuscode_modbus
+      slave: 1
+      address: 49206
+      scan_interval: 5
+      input_type: holding
+      data_type: uint64
+      device_class: power_factor
+      
+    - name: wallbox_ladeleistung_modbus
+      unique_id: wallbox_ladeleistung_modbus
+      slave: 1
+      address: 49246
+      scan_interval: 5
+      input_type: holding
+      scale: 0.001
+      precision: 0
+      data_type: uint64
+      device_class: power
+      state_class: measurement
+      unit_of_measurement: W
+
+    - name: wallbox_energieverbrauch
+      unique_id: wallbox_energieverbrauch
+      slave: 1
+      scale: 0.001 
+      precision: 2
+      address: 49254
+      scan_interval: 5 
+      input_type: holding
