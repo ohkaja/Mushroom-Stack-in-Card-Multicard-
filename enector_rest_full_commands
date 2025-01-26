@@ -1,0 +1,42 @@
+#Enector Wallbox API Konfiguration    
+  wallbox_set_lock_mode:
+    url: "http://<KSEM-IP>/api/e-mobility/config/chargemode"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: '{ "mode" : "lock" }'
+
+  wallbox_set_solar_pure_mode:
+    url: "http://<KSEM-IP>/api/e-mobility/config/chargemode"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: '{ "mode": "pv", "mincharginpowerquota": 0, "minpvpowerquota": 100 }'
+    
+  wallbox_set_solar_plus_mode:
+    url: "http://<KSEM-IP>/api/e-mobility/config/chargemode"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: '{ "mode": "hybrid" }'
+    
+  wallbox_set_power_mode:
+    url: "http://<KSEM-IP>/api/e-mobility/config/chargemode"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: '{ "mode": "grid" }'
+	
+  wallbox_set_homebattery_on:
+    url: "http://<KSEM-IP>/api/kostal-energyflow/configuration/batteryusage"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: 'true'
+    
+  wallbox_set_homebattery_off:
+    url: "http://<KSEM-IP>/api/kostal-energyflow/configuration/batteryusage"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: 'false'
