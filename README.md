@@ -7,6 +7,8 @@ Lovelace Plugins needed:
 * Card-Mod => https://github.com/thomasloven/lovelace-card-mod
 * Mini-Graph-Card => https://github.com/kalkih/mini-graph-card
 * Volkswagen CARNET => https://github.com/robinostlund/homeassistant-volkswagencarnet
+* Modbus
+* REST Command
 
 # Create a simplified Floorplan/ Cardspace
 🎥 <a href="https://youtu.be/XtIilQJFz8U">Video demo Youtube</a>
@@ -75,8 +77,9 @@ To make this work, a KSEM API key must be obtained 🔑, and some sensors need t
 
 To understand what’s going on, you can take a view on 🔍 <a href="https://cdn-production.kostal.com/-/media/document-library-folder---kse/2023/11/20/15/10/ba_kostal_interface_ksem_de.pdf">KSEM Modbus documentation</a>
 
+**=> DEMO** https://github.com/user-attachments/assets/69dd1d14-e9cd-44bc-93cc-d5a46ec084ea
 
-Lets Start:
+**Lets Start:**
 
 1. Login to your KSEM and press on the profile icon on the upper right corner and select "Accesskey".
    <p><img width="146" alt="image" src="https://github.com/user-attachments/assets/1bbec941-d0e5-414f-9ac0-1ac70cd112a5" /></p> 🔑
@@ -104,8 +107,7 @@ Lets Start:
    * wallbox_homebattery_mode (usage of homebattery for ev or not)
    * wallbox_phase_usage (3 or 1 phase usage [if applicable])
 9. Add the lovelace yaml to on of your dashboards <a href="enector_lovelace">enector_lovelace</a>.
-10. Done. You´ll now be able to fully remote your Enector through Home Assistant.
-    https://github.com/user-attachments/assets/69dd1d14-e9cd-44bc-93cc-d5a46ec084ea
+10. Done. ✅ You’ll now be able to fully remote your Enector through Home Assistant.
 
 
 
