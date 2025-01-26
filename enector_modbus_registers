@@ -1,4 +1,4 @@
-    - name: wallbox_lademodus_modbus #Lademodus 1 Lock Mode; 2 Power Mode; 3 Solar Pure Mode; 4 Solar Plus Mode
+    - name: wallbox_lademodus_modbus
       unique_id: wallbox_lademodus_modbus
       slave: 1
       address: 40994
