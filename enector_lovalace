@@ -1,0 +1,219 @@
+type: vertical-stack
+cards:
+  - type: markdown
+    content: <h3>Wallbox</h3>
+  - type: custom:mushroom-entity-card
+    entity: sensor.wallbox_statuscode_friendly
+    icon: mdi:information
+    icon_color: primary
+    primary_info: state
+    secondary_info: none
+    tap_action:
+      action: none
+    hold_action:
+      action: none
+    double_tap_action:
+      action: none
+    visibility:
+      - condition: state
+        entity: sensor.wallbox_lademodus_modbus
+        state_not: "1"
+  - type: entity
+    entity: sensor.wallbox_ladeleistung_modbus
+    name: Ladeleistung
+    visibility:
+      - condition: and
+        conditions:
+          - condition: state
+            entity: sensor.wallbox_lademodus_modbus
+            state_not: "1"
+          - condition: state
+            entity: sensor.wallbox_statuscode_modbus
+            state: "5"
+  - type: vertical-stack
+    cards:
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: "Aktuell: Gesperrt"
+        color: disabled
+        hide_state: true
+        vertical: true
+        icon: mdi:lock-open
+        tap_action:
+          action: none
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_modbus
+            state: "1"
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: "Aktuell: Power Mode"
+        color: red
+        hide_state: true
+        vertical: true
+        icon: mdi:power-plug
+        tap_action:
+          action: none
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_modbus
+            state: "2"
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: "Aktuell: Solar Pure"
+        color: accent
+        hide_state: true
+        vertical: true
+        icon: mdi:solar-power-variant
+        tap_action:
+          action: none
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_modbus
+            state: "3"
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: "Aktuell: Solar Plus"
+        color: indigo
+        hide_state: true
+        vertical: true
+        icon: mdi:solar-power
+        tap_action:
+          action: none
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_modbus
+            state: "4"
+  - type: horizontal-stack
+    cards:
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: Gesperrt
+        color: disabled
+        hide_state: true
+        vertical: true
+        icon: mdi:lock-open
+        tap_action:
+          action: perform-action
+          perform_action: rest_command.wallbox_set_lock_mode
+          target: {}
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_mqtt
+            state_not: "1"
+        icon_tap_action:
+          action: perform-action
+          perform_action: input_select.select_option
+          target:
+            entity_id: input_select.wallbox_activechargemode
+          data:
+            option: Lock Mode
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: Power Mode
+        color: red
+        hide_state: true
+        vertical: true
+        icon: mdi:power-plug
+        tap_action:
+          action: perform-action
+          perform_action: rest_command.wallbox_set_power_mode
+          target: {}
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_mqtt
+            state_not: "2"
+        icon_tap_action:
+          action: perform-action
+          perform_action: input_select.select_option
+          target:
+            entity_id: input_select.wallbox_activechargemode
+          data:
+            option: Power Mode
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: Solar Pure
+        color: accent
+        hide_state: true
+        vertical: true
+        icon: mdi:solar-power-variant
+        tap_action:
+          action: perform-action
+          perform_action: rest_command.wallbox_set_solar_pure_mode
+          target: {}
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_mqtt
+            state_not: "3"
+        icon_tap_action:
+          action: perform-action
+          perform_action: input_select.select_option
+          target:
+            entity_id: input_select.wallbox_activechargemode
+          data:
+            option: Solar Pure Mode
+      - type: tile
+        entity: sensor.wallbox_statuscode_modbus
+        name: Solar Plus
+        color: indigo
+        hide_state: true
+        vertical: true
+        icon: mdi:solar-power
+        tap_action:
+          action: perform-action
+          perform_action: rest_command.wallbox_set_solar_plus_mode
+          target: {}
+        visibility:
+          - condition: state
+            entity: sensor.wallbox_lademodus_mqtt
+            state_not: "4"
+        icon_tap_action:
+          action: perform-action
+          perform_action: input_select.select_option
+          target:
+            entity_id: input_select.wallbox_activechargemode
+          data:
+            option: Solar Plus Mode
+  - type: markdown
+    content: <h3>Erweitert</h3>
+  - type: horizontal-stack
+    cards:
+      - type: tile
+        entity: switch.wallbox_homebattery_mode
+        name: Hausbatterie nutzen
+        icon: mdi:battery-charging
+        color: red
+        tap_action:
+          action: toggle
+        icon_tap_action:
+          action: toggle
+  - type: horizontal-stack
+    cards:
+      - type: tile
+        tap_action:
+          action: perform-action
+          perform_action: rest_command.wallbox_set_phase_one
+          target: {}
+        name: 3-phasig
+        color: deep-orange
+        icon: mdi:numeric-3-box-multiple
+        visibility:
+          - condition: state
+            entity: switch.wallbox_phase_usage
+            state: "on"
+        entity: switch.wallbox_phase_usage
+        hide_state: true
+      - type: tile
+        entity: switch.wallbox_phase_usage
+        tap_action:
+          action: perform-action
+          perform_action: rest_command.wallbox_set_phase_three
+          target: {}
+        name: 1-phasig
+        color: light-blue
+        icon: mdi:numeric-1-box
+        visibility:
+          - condition: state
+            entity: switch.wallbox_phase_usage
+            state: "off"
+        hide_state: true
