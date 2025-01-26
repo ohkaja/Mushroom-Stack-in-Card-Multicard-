@@ -1,0 +1,48 @@
+- sensor:
+    - name: "wallbox_lademodus_friendly"
+      unique_id: "wallbox_lademodus_friendly"
+      state: >
+        {% set mode = states('sensor.wallbox_lademodus_modbus') | int %}
+        {% if mode == 1 %}
+          Lock Mode
+        {% elif mode == 2 %}
+          Power Mode
+        {% elif mode == 3 %}
+          Solar Pure Mode
+        {% elif mode == 4 %}
+          Solar Plus Mode
+        {% else %}
+          Unknown
+        {% endif %}
+
+- sensor:
+    - name: "wallbox_statuscode_friendly"
+      unique_id: "wallbox_statuscode_friendly"
+      state: >
+        {% set status = states('sensor.wallbox_statuscode_modbus') | int %}
+        {% set status_messages = {
+          1: 'Kein Fahrzeug verbunden',
+          2: 'Fahrzeug verbunden',
+          3: 'Pausiert',
+          4: 'Ladevorgang wird initialisiert',
+          5: 'Ladend',
+          6: 'Kommunikation Fahrzeug unterbrochen',
+          7: 'Servicemodus'
+        } %}
+        {{ status_messages.get(status, 'Unbekannt') }}
+
+- switch:
+    - name: "wallbox_homebattery_mode"
+      unique_id: "wallbox_homebattery_mode"
+      turn_on:
+        service: rest_command.wallbox_set_homebattery_on
+      turn_off:
+        service: rest_command.wallbox_set_homebattery_off
+
+- switch:
+    - name: "wallbox_phase_usage"
+      unique_id: "wallbox_phase_usage"
+      turn_on:
+        service: rest_command.wallbox_set_phase_three
+      turn_off:
+        service: rest_command.wallbox_set_phase_one
