@@ -40,3 +40,17 @@
     headers:
       authorization: !secret wallbox_api_token
     payload: 'false'
+
+  wallbox_set_phase_three:
+    url: "http://<KSEM-IP>/api/e-mobility/phaseusage"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: '{"phase_usage": 0}'
+    
+  wallbox_set_phase_one:
+    url: "http://<KSEM-IP>/api/e-mobility/phaseusage"
+    method: put
+    headers:
+      authorization: !secret wallbox_api_token
+    payload: '{"phase_usage": 1}'
