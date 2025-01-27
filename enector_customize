@@ -1,0 +1,18 @@
+sensor.wallbox_statuscode_friendly:
+  options:
+    - Kein Fahrzeug verbunden
+    - Fahrzeug verbunden
+    - Pausiert
+    - Ladevorgang wird initialisiert
+    - Ladend
+    - Kommunikation Fahrzeug unterbrochen
+    - Servicemodus
+    - Unbekannt
+
+sensor.wallbox_lademodus_friendly:
+  options:
+    - Lock Mode
+    - Power Mode
+    - Solar Pure Mode
+    - Solar Plus Mode
+    - Unknown
