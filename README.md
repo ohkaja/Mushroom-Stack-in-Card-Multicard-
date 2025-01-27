@@ -73,7 +73,7 @@ Thx to <a href="https://community.home-assistant.io/u/thronramses/summary">Thron
 
 First of all, it’s not perfect, but it works well for everyday charging. ⚡😊
 It’s a combination of REST commands sent to the API (KSEM 2.5.0 and later) and reading the status codes via Modbus. 🖥️📡
-It's important to not use KSEM to set battery usage and phase usage. ❌🔋 Instead, use the REST commands, which you will have after implementing this. ✅📑
+It's **important to not use KSEM** up from here to set battery usage and phase usage. ❌🔋 Instead, use the REST commands, which you will have after implementing this. ✅📑
 
 To make this work, a KSEM API key must be obtained 🔑, and some sensors need to be created.
 
