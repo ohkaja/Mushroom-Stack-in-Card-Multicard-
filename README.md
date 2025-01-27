@@ -111,6 +111,10 @@ To understand what’s going on, you can take a view on 🔍 <a href="https://cd
 9. Add the lovelace yaml to on of your dashboards <a href="enector_lovelace">enector_lovelace</a>.
 10. Done. ✅ You’ll now be able to fully remote your Enector through Home Assistant.
 
+**Additional** you can add <a href="enector_customize">enector_customize</<> to your customize.yaml to use the human-readable states for automation purposes.
+Example: If Mode Solar Pure Mode then disable usage of Homebattery.
+
+Happy loading your EV.
 
 
 
