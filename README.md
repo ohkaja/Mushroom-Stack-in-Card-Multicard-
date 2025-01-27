@@ -84,17 +84,17 @@ To understand what’s going on, you can take a view on 🔍 <a href="https://cd
 **Lets Start:**
 
 1. Login to your KSEM and press on the profile icon on the upper right corner and select "Accesskey".
-   <p><img width="146" alt="image" src="https://github.com/user-attachments/assets/1bbec941-d0e5-414f-9ac0-1ac70cd112a5" /></p> 🔑
-3. Add a Accesskey "admin", then **copy** the shown key asap. There´s no way to show it again.
-4. Activate the Key (yellow key icon beside the new key).
-5. Put the key in your secrets.yaml as
+   <p><img width="147" alt="image" src="https://github.com/user-attachments/assets/40cd002a-db54-4440-a768-348572a83af9" /></p> 🔑
+2. Add a Accesskey "admin", then **copy** the shown key asap. There´s no way to show it again.
+3. Activate the Key (yellow key icon beside the new key).
+4. Put the key in your secrets.yaml as
    wallbox_api_token: Bearer eyJhbGciOiJSUzI[...]lqMnBknqs4uFnyFSw
-6. Add the modbus sensor like in <a href="enector_template_sensoren">enector_modbus_registers</a> described.
+5. Add the modbus sensor like in <a href="enector_template_sensoren">enector_modbus_registers</a> described.
    * wallbox_lademodus_modbus (40994) number indexing the active charging mode (site 19/29 of documentation)
    * wallbox_statuscode_modbus (49206) number indexing statuscode of the wallbox (site 22/23 of documentation)
    * wallbox_ladeleistung_modbus (49246) active load in Watts if charging
    * wallbox_energieverbrauch (49254) sum of debleeded Watts for Energydashboard
-7. Add the REST commands like in <a href="enector_rest_full_commands">enector_rest_full_commands</a> described. Naming is self-explanatory.
+6. Add the REST commands like in <a href="enector_rest_full_commands">enector_rest_full_commands</a> described. Naming is self-explanatory.
    * wallbox_set_lock_mode        
    * wallbox_set_solar_pure_mode 
    * wallbox_set_solar_plus_mode
@@ -103,13 +103,13 @@ To understand what’s going on, you can take a view on 🔍 <a href="https://cd
    * wallbox_set_homebattery_off
    * wallbox_set_phase_three
    * wallbox_set_phase_one
-8. Add the Template sensors like in <a href="enector_template_sensoren">enector_template_sensoren</a> described.
+7. Add the Template sensors like in <a href="enector_template_sensoren">enector_template_sensoren</a> described.
    * wallbox_lademodus_friendly (numbers from **wallbox_lademodus_modbus** to: Lock Mode (1), Power Mode (2), Solar Pure Mode (3), Solar Plus Mode (4)
    * wallbox_statuscode_friendly (numbers from **wallbox_statuscode_modbus** to: Kein Fahrzeug verbunden (1), Fahrzeug verbunden (2), Ladevorgang pausiert (3), Ladevorgang wird initialisiert (4), Läd (5), Kommunikation unterbrochen (6), Servicemodus (7).
    * wallbox_homebattery_mode (usage of homebattery for ev or not)
    * wallbox_phase_usage (3 or 1 phase usage [if applicable])
-9. Add the lovelace yaml to on of your dashboards <a href="enector_lovelace">enector_lovelace</a>.
-10. Done. ✅ You’ll now be able to fully remote your Enector through Home Assistant.
+8. Add the lovelace yaml to on of your dashboards <a href="enector_lovelace">enector_lovelace</a>.
+9. Done. ✅ You’ll now be able to fully remote your Enector through Home Assistant.
 
 **Additional** you can add <a href="enector_customize">enector_customize</a> to your customize.yaml to use the human-readable states for ⚙️ automation purposes.
 Example: If Mode Solar Pure Mode then disable usage of Homebattery. 
