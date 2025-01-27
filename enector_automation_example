@@ -1,0 +1,63 @@
+alias: AUTOMATE-ENECTOR-Wallbox
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - sensor.wallbox_lademodus_friendly
+    to: Solar Pure Mode
+    id: solar-pure-mode
+  - trigger: state
+    entity_id:
+      - sensor.wallbox_lademodus_friendly
+    to: Solar Plus Mode
+    id: solar-plus-mode
+  - trigger: state
+    entity_id:
+      - person.PERSON
+    to: not_home
+    id: user-away
+  - trigger: state
+    entity_id:
+      - person.PERSON
+    to: home
+    id: user-home
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - solar-pure-mode
+        sequence:
+          - action: switch.turn_off
+            metadata: {}
+            data: {}
+            target:
+              entity_id: switch.wallbox_homebattery_mode
+      - conditions:
+          - condition: trigger
+            id:
+              - solar-plus-mode
+        sequence:
+          - action: switch.turn_on
+            metadata: {}
+            data: {}
+            target:
+              entity_id: switch.wallbox_homebattery_mode
+      - conditions:
+          - condition: trigger
+            id:
+              - user-away
+        sequence:
+          - action: rest_command.wallbox_set_lock_mode
+            metadata: {}
+            data: {}
+      - conditions:
+          - condition: trigger
+            id:
+              - user-home
+        sequence:
+          - action: rest_command.wallbox_set_solar_pure_mode
+            metadata: {}
+            data: {}
+mode: single
