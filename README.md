@@ -69,7 +69,7 @@ Needs an open/ close automation or an combined (trigger ID) automation to work.
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20Volkswagen%20Carnet%20Siri%20command">Code Siri commands</a>
 
 # KOSTAL Enector steering via REST-API
-Thx to <a href="https://community.home-assistant.io/u/thronramses/summary">ThronRamses</a>! :*
+Thx to <a href="https://community.home-assistant.io/u/thronramses/summary">ThronRamses</a>! 💋✌️
 
 First of all, it’s not perfect, but it works well for everyday charging. ⚡😊
 It’s a combination of REST commands sent to the API (KSEM 2.5.0 and later) and reading the status codes via Modbus. 🖥️📡
