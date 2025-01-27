@@ -94,7 +94,7 @@ To understand what’s going on, you can take a view on 🔍 <a href="https://cd
    * wallbox_statuscode_modbus (49206) number indexing statuscode of the wallbox (site 22/23 of documentation)
    * wallbox_ladeleistung_modbus (49246) active load in Watts if charging
    * wallbox_energieverbrauch (49254) sum of debleeded Watts for Energydashboard
-7. Add the REST commands like in <a href="enector_rest_full_commands">enector_rest_full_commands</a> described. Naming is "speaking".
+7. Add the REST commands like in <a href="enector_rest_full_commands">enector_rest_full_commands</a> described. Naming is self-explanatory.
    * wallbox_set_lock_mode        
    * wallbox_set_solar_pure_mode 
    * wallbox_set_solar_plus_mode
@@ -103,7 +103,7 @@ To understand what’s going on, you can take a view on 🔍 <a href="https://cd
    * wallbox_set_homebattery_off
    * wallbox_set_phase_three
    * wallbox_set_phase_one
-8. Add the Template sensors like in <a href="enector_template_sensoren">enector_rest_full_commands</a> described.
+8. Add the Template sensors like in <a href="enector_template_sensoren">enector_template_sensoren</a> described.
    * wallbox_lademodus_friendly (numbers from **wallbox_lademodus_modbus** to: Lock Mode (1), Power Mode (2), Solar Pure Mode (3), Solar Plus Mode (4)
    * wallbox_statuscode_friendly (numbers from **wallbox_statuscode_modbus** to: Kein Fahrzeug verbunden (1), Fahrzeug verbunden (2), Ladevorgang pausiert (3), Ladevorgang wird initialisiert (4), Läd (5), Kommunikation unterbrochen (6), Servicemodus (7).
    * wallbox_homebattery_mode (usage of homebattery for ev or not)
