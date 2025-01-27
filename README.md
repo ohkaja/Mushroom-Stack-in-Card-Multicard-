@@ -115,7 +115,7 @@ To understand what’s going on, you can take a view on 🔍 <a href="https://cd
 Example: If Mode Solar Pure Mode then disable usage of Homebattery. 
 👀 See more in <a href="enector_automation_example">enector_automation_example</a> .
 
-Happy loading your EV.
+Happy loading your EV 🚎.
 
 
 
