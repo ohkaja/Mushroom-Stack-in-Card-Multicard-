@@ -37,3 +37,6 @@
       address: 49254
       scan_interval: 5 
       input_type: holding
+      device_class: energy
+      state_class: total_increasing
+      unit_of_measurement: kWh
