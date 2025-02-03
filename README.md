@@ -57,7 +57,7 @@ Lovelace Plugins needed:
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20floorplan">Code</a>
 
 # Car Card with additional informations and loacation
-<img width="372" alt="image" src="https://github.com/user-attachments/assets/bb2a956b-4d41-4b5d-a8a3-43a80c3ff20b">
+<img width="175" alt="image" src="https://github.com/user-attachments/assets/bb2a956b-4d41-4b5d-a8a3-43a80c3ff20b">
 <p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20Volkswagen-Carnet">Code</a>
 
