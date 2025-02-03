@@ -66,11 +66,14 @@ Lovelace Plugins needed:
 https://github.com/user-attachments/assets/35cf9a42-ba64-4048-a0a5-640dfaa662bf
 <p></p>
 Needs an open/ close automation or an combined (trigger ID) automation to work.
+<p></p>
 <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/example%20Volkswagen%20Carnet%20Siri%20command">Code Siri commands</a>
 
 # KOSTAL Enector steering via REST-API
 Thx to <a href="https://community.home-assistant.io/u/thronramses/summary">ThronRamses</a>! 💋✌️
-
+<p></p>
+![image](https://github.com/user-attachments/assets/716a2669-ee9b-4ca6-bd78-77fcf4dcc06e)
+<p></p>
 First of all, it’s not perfect, but it works well for everyday charging. ⚡😊
 It’s a combination of REST commands sent to the API (KSEM 2.5.0 and later) and reading the status codes via Modbus. 🖥️📡
 It's **important to not use KSEM** up from here to set battery usage and phase usage. ❌🔋 Instead, use the REST commands, which you will have after implementing this. ✅📑
