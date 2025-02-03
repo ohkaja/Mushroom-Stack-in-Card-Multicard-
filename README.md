@@ -72,7 +72,7 @@ Needs an open/ close automation or an combined (trigger ID) automation to work.
 # KOSTAL Enector steering via REST-API
 Thx to <a href="https://community.home-assistant.io/u/thronramses/summary">ThronRamses</a>! 💋✌️
 <p></p>
-![image](https://github.com/user-attachments/assets/716a2669-ee9b-4ca6-bd78-77fcf4dcc06e)
+<img width="372" alt="image" src="https://github.com/user-attachments/assets/716a2669-ee9b-4ca6-bd78-77fcf4dcc06e />
 <p></p>
 First of all, it’s not perfect, but it works well for everyday charging. ⚡😊
 It’s a combination of REST commands sent to the API (KSEM 2.5.0 and later) and reading the status codes via Modbus. 🖥️📡
