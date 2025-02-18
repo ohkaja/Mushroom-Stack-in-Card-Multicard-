@@ -29,9 +29,7 @@ cards:
       - type: custom:mushroom-template-card
         primary: |-
           Effizienzklasse
-          {% set gasverbrauch_m3 = states('sensor.sensor.GASVERBRAUCHSTATISTIK_12_MONATE') | float %} 
-          {% set zustandszahl = states('GASZUSTANDSZAHL') |  float %} 
-          {% set result = (gasverbrauch_m3 * zustandszahl) / 190 %} 
+          {% set result = states('sensor.hlp_energieausweis_wert') | float %}
           {% if result <= 30 %} A+ 
           {% elif result <= 50 %} A 
           {% elif result <= 75 %} B 
