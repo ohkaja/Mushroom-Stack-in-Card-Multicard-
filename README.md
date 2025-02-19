@@ -123,6 +123,17 @@ Example: If Mode Solar Pure Mode then disable usage of Homebattery.
 
 Happy loading your EV 🚎.
 
+# Apex-Charts for nicer Charts
+More examples here: https://apexcharts.com/
+
+pie                        |  radialBar                |  graph             
+:-------------------------:|:-------------------------:|:-------------------------:|
+<img width="358" alt="image" src="https://github.com/user-attachments/assets/52a10327-f6f1-4335-bc72-0e3d946cd8ed" />   |  <img width="355" alt="image" src="https://github.com/user-attachments/assets/1bf4b036-6f80-40fa-b739-970f2e87dc94" /> | <img width="356" alt="image" src="https://github.com/user-attachments/assets/5cd36b6e-0301-49ee-80b0-ae4289a17842" />
+<a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/apex-charts-example-pie">Code</a> | <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/apex-charts-example-radialBar">Code</a> | <a href="https://github.com/ohkaja/Mushroom-Stack-in-Card-Multicard-/blob/main/apex-charts-example-graph">Code</a>
+
+
+
+
 
 
 
