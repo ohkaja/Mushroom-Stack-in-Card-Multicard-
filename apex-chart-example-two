@@ -1,0 +1,59 @@
+type: custom:apexcharts-card
+chart_type: radialBar
+update_interval: 6h
+header:
+show: true
+title: " "
+show_states: true
+colorize_states: false
+apex_config:
+legend:
+  show: false
+experimental:
+color_threshold: true
+series:
+- entity: sensor.hostname_iot_inverter_01_autarky_year
+  name: Jahr
+  color_threshold:
+    - value: 0
+      color: red
+    - value: 50
+      color: orange
+    - value: 80
+      color: green
+- entity: sensor.hostname_iot_inverter_01_autarky_month
+  name: Monat
+  color_threshold:
+    - value: 0
+      color: red
+    - value: 50
+      color: orange
+    - value: 80
+      color: green
+- entity: sensor.hostname_iot_inverter_01_autarky_day
+  name: Tag
+  color_threshold:
+    - value: 0
+      color: red
+    - value: 50
+      color: orange
+    - value: 75
+      color: green
+- entity: sensor.hostname_iot_inverter_01_own_consumption_rate_day
+  name: Nutzung
+  color_threshold:
+    - value: 0
+      color: red
+    - value: 50
+      color: orange
+    - value: 80
+      color: green
+- entity: sensor.hlp_iot_inverter_01_effektivitat_total
+  name: η Battery
+  color_threshold:
+    - value: 0
+      color: red
+    - value: 50
+      color: orange
+    - value: 90
+      color: green
