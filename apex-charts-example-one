@@ -1,0 +1,31 @@
+type: custom:apexcharts-card
+chart_type: pie
+header:
+  show: true
+  show_states: true
+  colorize_states: true
+apex_config:
+  legend:
+    show: false
+    position: top
+  dataLabels:
+    enabled: false
+color_list:
+  - grey
+  - "#ff9800"
+  - "#4db6ac"
+  - "#4588b9"
+  - "#9C7FD4"
+series:
+  - entity: sensor.hostname_iot_inverter_01_home_consumption_day
+    name: Gesamt
+    show:
+      in_chart: false
+  - entity: sensor.hostname_iot_inverter_01_home_consumption_from_pv_day
+    name: PV
+  - entity: sensor.hostname_iot_inverter_01_battery_discharge_day
+    name: Batterie
+  - entity: sensor.hostname_iot_inverter_01_home_consumption_from_grid_day
+    name: Netz
+  - entity: sensor.hostname_iot_inverter_01_energy_to_grid_day
+    name: Einspeisung
