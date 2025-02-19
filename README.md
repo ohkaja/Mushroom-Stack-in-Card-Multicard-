@@ -6,9 +6,10 @@ Lovelace Plugins needed:
 * Stack-in-Card => https://github.com/custom-cards/stack-in-card
 * Card-Mod => https://github.com/thomasloven/lovelace-card-mod
 * Mini-Graph-Card => https://github.com/kalkih/mini-graph-card
-* Volkswagen CARNET => https://github.com/robinostlund/homeassistant-volkswagencarnet
-* Modbus
-* REST Command
+* Volkswagen CARNET (HACS) => https://github.com/robinostlund/homeassistant-volkswagencarnet
+* Apex-Charts (HACS) => https://github.com/RomRider/apexcharts-card
+* Modbus => https://www.home-assistant.io/integrations/modbus/
+* RESTFul Command => https://www.home-assistant.io/integrations/rest/
 
 # Create a simplified Floorplan/ Cardspace
 🎥 <a href="https://youtu.be/XtIilQJFz8U">Video demo Youtube</a>
