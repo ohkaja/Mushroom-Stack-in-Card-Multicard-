@@ -1,0 +1,23 @@
+type: custom:apexcharts-card
+graph_span: 18h
+update_interval: 30min
+all_series_config:
+  stroke_width: 2
+  curve: smooth
+  opacity: 0.3
+  type: area
+header:
+  show: false
+  show_states: false
+  colorize_states: true
+apex_config:
+  legend:
+    show: false
+  dataLabels:
+    enabled: false
+  yaxis:
+    show: true
+series:
+  - entity: sensor.hostname_iot_inverter_01_sum_power_of_all_pv_dc_inputs
+    name: PV
+    color: orange
