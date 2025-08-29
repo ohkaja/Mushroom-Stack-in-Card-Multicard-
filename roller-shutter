@@ -7,42 +7,31 @@ blueprint:
     - Sommer Abend: 5 Min nach Sonnenuntergang zu
     - Winter: 30 Min vor Sonnenuntergang schließen
     - Weihnachtszeit: abends nur 75% schließen, um 22 Uhr komplett
-
   domain: automation
   input:
     cover_entity:
       name: Rollo oder Rollo-Gruppe
-      description: Wähle das zu steuernde Cover (einzeln oder Gruppe)
       selector:
         target:
           entity:
             domain: cover
-
     sommer_modus:
       name: Sommer-Modus
-      description: input_boolean für Sommersteuerung
       selector:
         entity:
           domain: input_boolean
-
     weihnachtszeit:
       name: Weihnachtszeit
-      description: input_boolean für Weihnachtszeit
       selector:
         entity:
           domain: input_boolean
-
     workday_sensor:
       name: Workday Sensor
-      description: binary_sensor.workday_sensor (true=Arbeitstag)
       selector:
         entity:
           domain: binary_sensor
-
     orientation:
       name: Himmelsrichtung
-      description: Welche Hausseite soll geschützt werden?
-      default: south
       selector:
         select:
           options:
@@ -57,40 +46,32 @@ blueprint:
 
 mode: restart
 trigger:
-  # --- Morgen ---
   - platform: time
     at: "06:00:00"
     id: morning_workday
   - platform: time
     at: "08:00:00"
     id: morning_weekend
-
-  # --- Sonne trifft ausgewählte Richtung ---
   - platform: numeric_state
     entity_id: sun.sun
     attribute: azimuth
+    above: 0
+    below: 360
     id: sun_hits
-
-  # --- Sommer abends ---
   - platform: sun
     event: sunset
     offset: "+00:05:00"
     id: summer_evening
-
-  # --- Winter abends ---
   - platform: sun
     event: sunset
     offset: "-00:30:00"
     id: winter_evening
-
-  # --- Weihnachtszeit 22 Uhr ---
   - platform: time
     at: "22:00:00"
     id: christmas_close
 
 action:
   - choose:
-
       # --- Morgen Öffnen Werktag ---
       - conditions:
           - condition: trigger
@@ -107,7 +88,6 @@ action:
                   data:
                     position: "{{ repeat.index * 20 }}"
                 - delay: "00:12:00"
-
       # --- Morgen Öffnen Wochenende ---
       - conditions:
           - condition: trigger
@@ -124,7 +104,6 @@ action:
                   data:
                     position: "{{ repeat.index * 20 }}"
                 - delay: "00:12:00"
-
       # --- Sommer Sonnenschutz ---
       - conditions:
           - condition: trigger
@@ -153,7 +132,6 @@ action:
         sequence:
           - service: cover.close_cover
             target: !input cover_entity
-
       # --- Sommer Ende Sonnenschutz ---
       - conditions:
           - condition: trigger
@@ -182,7 +160,6 @@ action:
         sequence:
           - service: cover.open_cover
             target: !input cover_entity
-
       # --- Sommer Abend ---
       - conditions:
           - condition: trigger
@@ -196,7 +173,6 @@ action:
         sequence:
           - service: cover.close_cover
             target: !input cover_entity
-
       # --- Winter Abend ---
       - conditions:
           - condition: trigger
@@ -219,11 +195,10 @@ action:
                   - service: cover.set_cover_position
                     target: !input cover_entity
                     data:
-                      position: 25   # 75% zu
+                      position: 25
             default:
               - service: cover.close_cover
                 target: !input cover_entity
-
       # --- Weihnachtszeit 22 Uhr ---
       - conditions:
           - condition: trigger
