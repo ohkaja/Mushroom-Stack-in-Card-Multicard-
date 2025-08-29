@@ -1,0 +1,236 @@
+blueprint:
+  name: Rollo Steuerung (Sommer/Winter/Weihnachtszeit + Himmelsrichtung)
+  description: >
+    Automatische Rollo-Steuerung:
+    - Morgens stufenweise öffnen (Workday 6–7 Uhr, Wochenende 8–9 Uhr)
+    - Sommer: Sonnenschutz bei direkter Einstrahlung (Himmelsrichtung wählbar)
+    - Sommer Abend: 5 Min nach Sonnenuntergang zu
+    - Winter: 30 Min vor Sonnenuntergang schließen
+    - Weihnachtszeit: abends nur 75% schließen, um 22 Uhr komplett
+
+  domain: automation
+  input:
+    cover_entity:
+      name: Rollo oder Rollo-Gruppe
+      description: Wähle das zu steuernde Cover (einzeln oder Gruppe)
+      selector:
+        target:
+          entity:
+            domain: cover
+
+    sommer_modus:
+      name: Sommer-Modus
+      description: input_boolean für Sommersteuerung
+      selector:
+        entity:
+          domain: input_boolean
+
+    weihnachtszeit:
+      name: Weihnachtszeit
+      description: input_boolean für Weihnachtszeit
+      selector:
+        entity:
+          domain: input_boolean
+
+    workday_sensor:
+      name: Workday Sensor
+      description: binary_sensor.workday_sensor (true=Arbeitstag)
+      selector:
+        entity:
+          domain: binary_sensor
+
+    orientation:
+      name: Himmelsrichtung
+      description: Welche Hausseite soll geschützt werden?
+      default: south
+      selector:
+        select:
+          options:
+            - label: Ost (45–135°)
+              value: east
+            - label: Süd (135–225°)
+              value: south
+            - label: West (225–315°)
+              value: west
+            - label: Nord (315–45°)
+              value: north
+
+mode: restart
+trigger:
+  # --- Morgen ---
+  - platform: time
+    at: "06:00:00"
+    id: morning_workday
+  - platform: time
+    at: "08:00:00"
+    id: morning_weekend
+
+  # --- Sonne trifft ausgewählte Richtung ---
+  - platform: numeric_state
+    entity_id: sun.sun
+    attribute: azimuth
+    id: sun_hits
+
+  # --- Sommer abends ---
+  - platform: sun
+    event: sunset
+    offset: "+00:05:00"
+    id: summer_evening
+
+  # --- Winter abends ---
+  - platform: sun
+    event: sunset
+    offset: "-00:30:00"
+    id: winter_evening
+
+  # --- Weihnachtszeit 22 Uhr ---
+  - platform: time
+    at: "22:00:00"
+    id: christmas_close
+
+action:
+  - choose:
+
+      # --- Morgen Öffnen Werktag ---
+      - conditions:
+          - condition: trigger
+            id: morning_workday
+          - condition: state
+            entity_id: !input workday_sensor
+            state: "on"
+        sequence:
+          - repeat:
+              count: 5
+              sequence:
+                - service: cover.set_cover_position
+                  target: !input cover_entity
+                  data:
+                    position: "{{ repeat.index * 20 }}"
+                - delay: "00:12:00"
+
+      # --- Morgen Öffnen Wochenende ---
+      - conditions:
+          - condition: trigger
+            id: morning_weekend
+          - condition: state
+            entity_id: !input workday_sensor
+            state: "off"
+        sequence:
+          - repeat:
+              count: 5
+              sequence:
+                - service: cover.set_cover_position
+                  target: !input cover_entity
+                  data:
+                    position: "{{ repeat.index * 20 }}"
+                - delay: "00:12:00"
+
+      # --- Sommer Sonnenschutz ---
+      - conditions:
+          - condition: trigger
+            id: sun_hits
+          - condition: state
+            entity_id: !input sommer_modus
+            state: "on"
+          - condition: state
+            entity_id: !input weihnachtszeit
+            state: "off"
+          - condition: template
+            value_template: >
+              {% set az = state_attr('sun.sun','azimuth')|float(0) %}
+              {% set dir = inputs.orientation %}
+              {% if dir == 'east' %}
+                {{ az >= 45 and az <= 135 }}
+              {% elif dir == 'south' %}
+                {{ az >= 135 and az <= 225 }}
+              {% elif dir == 'west' %}
+                {{ az >= 225 and az <= 315 }}
+              {% elif dir == 'north' %}
+                {{ az >= 315 or az <= 45 }}
+              {% else %}
+                false
+              {% endif %}
+        sequence:
+          - service: cover.close_cover
+            target: !input cover_entity
+
+      # --- Sommer Ende Sonnenschutz ---
+      - conditions:
+          - condition: trigger
+            id: sun_hits
+          - condition: state
+            entity_id: !input sommer_modus
+            state: "on"
+          - condition: state
+            entity_id: !input weihnachtszeit
+            state: "off"
+          - condition: template
+            value_template: >
+              {% set az = state_attr('sun.sun','azimuth')|float(0) %}
+              {% set dir = inputs.orientation %}
+              {% if dir == 'east' %}
+                {{ az < 45 or az > 135 }}
+              {% elif dir == 'south' %}
+                {{ az < 135 or az > 225 }}
+              {% elif dir == 'west' %}
+                {{ az < 225 or az > 315 }}
+              {% elif dir == 'north' %}
+                {{ az < 315 and az > 45 }}
+              {% else %}
+                true
+              {% endif %}
+        sequence:
+          - service: cover.open_cover
+            target: !input cover_entity
+
+      # --- Sommer Abend ---
+      - conditions:
+          - condition: trigger
+            id: summer_evening
+          - condition: state
+            entity_id: !input sommer_modus
+            state: "on"
+          - condition: state
+            entity_id: !input weihnachtszeit
+            state: "off"
+        sequence:
+          - service: cover.close_cover
+            target: !input cover_entity
+
+      # --- Winter Abend ---
+      - conditions:
+          - condition: trigger
+            id: winter_evening
+          - condition: or
+            conditions:
+              - condition: state
+                entity_id: !input sommer_modus
+                state: "off"
+              - condition: state
+                entity_id: !input weihnachtszeit
+                state: "on"
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: state
+                    entity_id: !input weihnachtszeit
+                    state: "on"
+                sequence:
+                  - service: cover.set_cover_position
+                    target: !input cover_entity
+                    data:
+                      position: 25   # 75% zu
+            default:
+              - service: cover.close_cover
+                target: !input cover_entity
+
+      # --- Weihnachtszeit 22 Uhr ---
+      - conditions:
+          - condition: trigger
+            id: christmas_close
+          - condition: state
+            entity_id: !input weihnachtszeit
+            state: "on"
+        sequence:
+          - service: cover.close_cover
+            target: !input cover_entity
